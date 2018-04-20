@@ -7,6 +7,7 @@ LegalNoticeSetup = Legals notices module setup
 LegalNoticeAbout = About Legals notices
 
 LegalNotice=Legal notice
+LegalNoticePDF=Legal notice:
 
 # ADMIN
 legalnotice_Country=Country
@@ -16,7 +17,7 @@ legalnotice_Notice=Legal notice
 
 Both=Both
 
-LegalNotice_FieldCountryRequired=Error : field "Country" required
-LegalNotice_FieldProductTypeRequired=Error : field "Product type" required
-LegalNotice_FieldVATUsedRequired=Error : field "VAT used" required
-LegalNotice_FieldMentionRequired=Error : field "Legal notice" required
+LegalNotice_FieldCountryRequired=Error: field "Country" required
+LegalNotice_FieldProductTypeRequired=Error: field "Product type" required
+LegalNotice_FieldVATUsedRequired=Error: field "VAT used" required
+LegalNotice_FieldMentionRequired=Error: field "Legal notice" required

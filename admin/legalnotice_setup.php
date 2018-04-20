@@ -200,7 +200,7 @@ else
 }
 
 $TProductType = array(0 => $langs->trans('Product'), 1 => $langs->trans('Service'), -1 => $langs->trans('Both'));
-$TVATused = array(0 => $langs->trans('Yes'), 1 => $langs->trans('No'), -1 => $langs->trans('Both'));
+$TVATused = array(0 => $langs->trans('No'), 1 => $langs->trans('Yes'), -1 => $langs->trans('Both'));
 
 print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">'; // Keep form because ajax_constantonoff return single link with <a> if the js is disabled
 print '<input type="hidden" name="action" value="add_mention" />';
