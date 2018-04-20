@@ -92,7 +92,6 @@ class ActionsLegalNotice
 
 			foreach($TLegalNotice as &$legalNotice)
 			{
-				var_dump($legalNotice->id);exit;
 				if ($object->thirdparty->tva_assuj != $legalNotice->is_assuj_tva && $legalNotice->is_assuj_tva != -1) continue;
 				if ($object->thirdparty->country_id != $legalNotice->fk_country && $legalNotice->fk_country != -1) continue;
 				// -2 = Produit OU Service, donc on considère que c'est OK dans tout les cas et qu'il ne faut pas faire un "continue"
