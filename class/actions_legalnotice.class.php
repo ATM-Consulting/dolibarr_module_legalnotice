@@ -62,7 +62,7 @@ class ActionsLegalNotice
 	 */
 	function doActions($parameters, &$object, &$action, $hookmanager)
 	{
-		
+		return 0;
 	}
 	
 	function beforePDFCreation($parameters, &$object, &$action, $hookmanager)
@@ -95,14 +95,15 @@ class ActionsLegalNotice
 
 			foreach($TLegalNotice as &$legalNotice) {
 				if($object->thirdparty->tva_assuj != $legalNotice->is_assuj_tva && $legalNotice->is_assuj_tva != -1) continue;
-				if($object->thirdparty->country_id != $legalNotice->fk_country && $legalNotice->fk_country != 'all') continue;
+				if($object->thirdparty->country_id != $legalNotice->fk_country && $legalNotice->fk_country != -1) continue;
 				if($product_type != $legalNotice->product_type) continue;
 
-				if(! empty($conf->global->INVOICE_FREE_TEXT)) $conf->global->INVOICE_FREE_TEXT .= "\n";
-				$conf->global->INVOICE_FREE_TEXT .= $outputlangs->transnoentities('LegalNoticePDF').' '.$legalNotice->mention;
+				if(! empty($conf->global->INVOICE_FREE_TEXT)) $conf->global->INVOICE_FREE_TEXT .= "\n<br />";
+				$conf->global->INVOICE_FREE_TEXT .= $legalNotice->mention;
 				break;	// On s'arrête à la première mention légale qui réunit toutes les conditions
 			}
 		}
+		
 		return 0;
 	}
 }

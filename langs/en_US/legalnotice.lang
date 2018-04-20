@@ -14,6 +14,8 @@ legalnotice_Country=Country
 legalnotice_ProductType=Product type
 legalnotice_VATused=VAT used
 legalnotice_Notice=Legal notice
+AllCountry=All countries
+LegalNoticeDeleteConfirm=Are you sure to delete this legal notice?
 
 Both=Both
 

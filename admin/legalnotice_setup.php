@@ -44,8 +44,10 @@ if (! $user->admin) {
 
 // Parameters
 $action = GETPOST('action', 'alpha');
+$id = GETPOST('id');
 
 $object = new LegalNotice($db);
+if (!empty($id)) $object->fetch($id);
 /*
  * Actions
  */
@@ -77,7 +79,7 @@ if (preg_match('/del_(.*)/',$action,$reg))
 	}
 }
 
-if ($action == 'add_mention')
+if ($action == 'save')
 {
 	$error = 0;
 	
@@ -87,7 +89,7 @@ if ($action == 'add_mention')
 	$mention = GETPOST('mention');
 	
 	if (is_array($fk_country)) $fk_country = implode(',', $fk_country);
-	if (strpos($fk_country, '-1') !== false) $fk_country = 'all'; // évite de selectionner la valeur "all" avec des pays
+	if (strpos($fk_country, '-1') !== false) $fk_country = '-1'; // évite de selectionner la valeur "all" avec des pays
 	
 	if (empty($fk_country)) { setEventMessage($langs->trans('LegalNotice_FieldCountryRequired'), 'errors'); $error++; }
 	if ($product_type !== -1 && $product_type !== 0 && $product_type !== 1) { setEventMessage($langs->trans('LegalNotice_FieldProductTypeRequired'), 'errors'); $error++; }
@@ -97,13 +99,13 @@ if ($action == 'add_mention')
 	
 	if (empty($error))
 	{
-		$legal_notice = new LegalNotice($db);
-		$legal_notice->fk_country = $fk_country;
-		$legal_notice->product_type = $product_type;
-		$legal_notice->is_assuj_tva = $is_assuj_tva;
-		$legal_notice->mention = $mention;
 		
-		$legal_notice->create($user);
+		$object->fk_country = $fk_country;
+		$object->product_type = $product_type;
+		$object->is_assuj_tva = $is_assuj_tva;
+		$object->mention = $mention;
+		
+		$object->create($user);
 		
 		header('Location: '.dol_buildpath('/legalnotice/admin/legalnotice_setup.php', 1));
 		exit;
@@ -111,8 +113,6 @@ if ($action == 'add_mention')
 }
 else if ($action == 'delete')
 {
-	$id = GETPOST('id');
-	$object->fetch($id);
 	$object->delete($user);
 	
 	header('Location: '.dol_buildpath('/legalnotice/admin/legalnotice_setup.php', 1));
@@ -203,25 +203,38 @@ $TProductType = array(0 => $langs->trans('Product'), 1 => $langs->trans('Service
 $TVATused = array(0 => $langs->trans('No'), 1 => $langs->trans('Yes'), -1 => $langs->trans('Both'));
 
 print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">'; // Keep form because ajax_constantonoff return single link with <a> if the js is disabled
-print '<input type="hidden" name="action" value="add_mention" />';
+print '<input type="hidden" name="action" value="save" />';
+if (!empty($object->id)) print '<input type="hidden" name="id" value="'.$object->id.'" />';
 print '<input name="token" value="'.$_SESSION['newtoken'].'" type="hidden">';
 
 print '<table class="noborder" width="100%">';
 
 print '<tr class="liste_titre">';
 print '<td width="20%">'.$langs->trans("legalnotice_Country").'</td>';
-print '<td width="20%">'.$langs->trans("legalnotice_ProductType").'</td>';
-print '<td width="20%">'.$langs->trans("legalnotice_VATused").'</td>';
-print '<td width="35%">'.$langs->trans("legalnotice_Notice").'</td>';
+print '<td width="10%">'.$langs->trans("legalnotice_ProductType").'</td>';
+print '<td width="10%">'.$langs->trans("legalnotice_VATused").'</td>';
+print '<td width="55%">'.$langs->trans("legalnotice_Notice").'</td>';
 print '<td width="5%">&nbsp;</td>';
 print '</tr>';
 
 $var=!$var;
 print '<tr '.$bc[$var].'>';
-print '<td>'.$form->multiselectarray('fk_country', $TCountry, array(-1), 0, 0, 'minwidth200').'</td>';
-print '<td>'.$form->selectarray('product_type', $TProductType).'</td>';
-print '<td>'.$form->selectarray('is_assuj_tva', $TVATused).'</td>';
-print '<td><textarea rows="4" cols="50" name="mention"></textarea></td>';
+print '<td>'.$form->multiselectarray('fk_country', $TCountry, (!empty($object->fk_country) ? explode(',', $object->fk_country) : array(-1)), 0, 0, 'minwidth200').'</td>';
+print '<td>'.$form->selectarray('product_type', $TProductType, $object->product_type).'</td>';
+print '<td>'.$form->selectarray('is_assuj_tva', $TVATused, $object->is_assuj_tva).'</td>';
+print '<td>';
+if (empty($conf->global->PDF_ALLOW_HTML_FOR_FREE_TEXT))
+{
+    print '<textarea name="mention" class="flat" cols="120">'.$object->mention.'</textarea>';
+}
+else
+{
+    include_once DOL_DOCUMENT_ROOT.'/core/class/doleditor.class.php';
+    $doleditor=new DolEditor('mention', $object->mention,'',120,'dolibarr_notes');
+    print $doleditor->Create();
+}
+print '</td>';
+
 print '<td><input class="button" type="submit" value="'.$langs->trans('Save').'" /></td>';
 print '</tr>';
 
@@ -244,10 +257,13 @@ foreach ($TLegalNotice as &$legal)
 		print '<span class="badge">'.$TCountry[$key].'</span>';
 	}
 	print '</td>';
-	print '<td width="20%">'.$TProductType[$legal->product_type].'</td>';
-	print '<td width="20%">'.$TVATused[$legal->is_assuj_tva].'</td>';
-	print '<td width="35%">'.$legal->mention.'</td>';
-	print '<td width="5%"><a href="'.dol_buildpath('/legalnotice/admin/legalnotice_setup.php', 1).'?id='.$legal->id.'&action=delete">'.img_picto('', 'delete').'</a></td>';
+	print '<td width="10%">'.$TProductType[$legal->product_type].'</td>';
+	print '<td width="10%">'.$TVATused[$legal->is_assuj_tva].'</td>';
+	print '<td width="55%">'.$legal->mention.'</td>';
+	print '<td width="5%">';
+	print '<a href="'.dol_buildpath('/legalnotice/admin/legalnotice_setup.php', 1).'?id='.$legal->id.'">'.img_picto('', 'edit').'</a>';
+	print '&nbsp;<a onclick=\'return confirm("'.addslashes($langs->trans('LegalNoticeDeleteConfirm')).'")\' href="'.dol_buildpath('/legalnotice/admin/legalnotice_setup.php', 1).'?id='.$legal->id.'&action=delete">'.img_picto('', 'delete').'</a>';
+	print '</td>';
 	print '</tr>';
 }
 

@@ -14,6 +14,8 @@ legalnotice_Country=Pays
 legalnotice_ProductType=Type produit applicable
 legalnotice_VATused=Assujetti à la TVA
 legalnotice_Notice=Mention
+AllCountry=Tous les pays
+LegalNoticeDeleteConfirm=Êtes-vous sûr de vouloir supprimer cette mention ?
 
 Both=Les deux
 
