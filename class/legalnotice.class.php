@@ -25,9 +25,10 @@ class LegalNotice extends SeedObject
 		$this->fields=array(
 				'entity'=>array('type'=>'integer','index'=>true)
 				,'fk_country'=>array('type'=>'array') // peut contenir plusieurs fk ou '-1' pour tous
-				,'product_type'=>array('type'=>'integer') // 0 ou 1 pour produit / service ou -1 pour les 2
+				,'product_type'=>array('type'=>'integer') // 0 => produit; 1 => service; -1 => produit ET service; -2 produit OU service
 				,'is_assuj_tva'=>array('type'=>'integer') // 0 = non, 1 = oui, -1 = les 2
 				,'mention'=>array('type'=>'text') // date, integer, string, float, array, text
+				,'rang'=>array('type'=>'integer')
 		);
 		
 		$this->init();
@@ -40,6 +41,7 @@ class LegalNotice extends SeedObject
 		$TLegalNotice = array();
 		$sql = 'SELECT rowid FROM '.MAIN_DB_PREFIX.'legalnotice';
 		$sql.= ' WHERE entity IN (0, '.getEntity('legalnotice').')';
+		$sql.= ' ORDER BY rang';
 		
 		$resql = $this->db->query($sql);
 		if ($resql)

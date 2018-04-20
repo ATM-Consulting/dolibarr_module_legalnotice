@@ -35,7 +35,8 @@ require_once '../lib/legalnotice.lib.php';
 dol_include_once('/legalnotice/class/legalnotice.class.php');
 
 // Translations
-$langs->load("legalnotice@legalnotice");
+$langs->load('admin');
+$langs->load('legalnotice@legalnotice');
 
 // Access control
 if (! $user->admin) {
@@ -87,13 +88,14 @@ if ($action == 'save')
 	$product_type = (int) GETPOST('product_type');
 	$is_assuj_tva = (int) GETPOST('is_assuj_tva');
 	$mention = GETPOST('mention');
+	$rang = (int) GETPOST('rang');
 	
 	if (is_array($fk_country)) $fk_country = implode(',', $fk_country);
 	if (strpos($fk_country, '-1') !== false) $fk_country = '-1'; // évite de selectionner la valeur "all" avec des pays
 	
 	if (empty($fk_country)) { setEventMessage($langs->trans('LegalNotice_FieldCountryRequired'), 'errors'); $error++; }
-	if ($product_type !== -1 && $product_type !== 0 && $product_type !== 1) { setEventMessage($langs->trans('LegalNotice_FieldProductTypeRequired'), 'errors'); $error++; }
-	if ($is_assuj_tva !== -1 && $is_assuj_tva !== 0 && $is_assuj_tva !== 1) { setEventMessage($langs->trans('LegalNotice_FieldVATUsedRequired'), 'errors'); $error++; }
+	if (!in_array($product_type, array(-2, -1, 0, 1))) { setEventMessage($langs->trans('LegalNotice_FieldProductTypeRequired'), 'errors'); $error++; }
+	if (!in_array($is_assuj_tva, array(-1, 0, 1))) { setEventMessage($langs->trans('LegalNotice_FieldVATUsedRequired'), 'errors'); $error++; }
 	if (empty($mention)) { setEventMessage($langs->trans('LegalNotice_FieldMentionRequired'), 'errors'); $error++; }
 	
 	
@@ -104,6 +106,7 @@ if ($action == 'save')
 		$object->product_type = $product_type;
 		$object->is_assuj_tva = $is_assuj_tva;
 		$object->mention = $mention;
+		$object->rang = $rang;
 		
 		$object->create($user);
 		
@@ -185,8 +188,9 @@ $TCountry = array('-1' => $langs->trans('AllCountry'));
 
 $sql = 'SELECT rowid, code as code_iso, label';
 $sql.= ' FROM '.MAIN_DB_PREFIX.'c_country';
-$sql.= ' WHERE active > 0';
+$sql.= ' WHERE active > 0 AND rowid > 0';
 $resql = $db->query($sql);
+
 if ($resql)
 {
 	while ($obj = $db->fetch_object($resql))
@@ -199,8 +203,8 @@ else
 	dol_print_error($db);
 }
 
-$TProductType = array(0 => $langs->trans('Product'), 1 => $langs->trans('Service'), -1 => $langs->trans('Both'));
-$TVATused = array(0 => $langs->trans('No'), 1 => $langs->trans('Yes'), -1 => $langs->trans('Both'));
+$TProductType = array(0 => $langs->trans('Product'), 1 => $langs->trans('Service'), -1 => $langs->trans('LegalNoticeProductAndService'), -2 => $langs->trans('LegalNoticeProductOrService'));
+$TVATused = array(0 => $langs->trans('No'), 1 => $langs->trans('Yes'), -1 => $langs->trans('LegalNoticeWhatEver'));
 
 print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">'; // Keep form because ajax_constantonoff return single link with <a> if the js is disabled
 print '<input type="hidden" name="action" value="save" />';
@@ -213,7 +217,8 @@ print '<tr class="liste_titre">';
 print '<td width="20%">'.$langs->trans("legalnotice_Country").'</td>';
 print '<td width="10%">'.$langs->trans("legalnotice_ProductType").'</td>';
 print '<td width="10%">'.$langs->trans("legalnotice_VATused").'</td>';
-print '<td width="55%">'.$langs->trans("legalnotice_Notice").'</td>';
+print '<td width="50%">'.$langs->trans("legalnotice_Notice").'</td>';
+print '<td width="5%">'.$langs->trans("legalnotice_Rang").'</td>';
 print '<td width="5%">&nbsp;</td>';
 print '</tr>';
 
@@ -234,7 +239,7 @@ else
     print $doleditor->Create();
 }
 print '</td>';
-
+print '<td><input type="text" name="rang" size="3" value="'.(!empty($object->id) ? $object->rang : '').'" /></td>';
 print '<td><input class="button" type="submit" value="'.$langs->trans('Save').'" /></td>';
 print '</tr>';
 
@@ -259,7 +264,8 @@ foreach ($TLegalNotice as &$legal)
 	print '</td>';
 	print '<td width="10%">'.$TProductType[$legal->product_type].'</td>';
 	print '<td width="10%">'.$TVATused[$legal->is_assuj_tva].'</td>';
-	print '<td width="55%">'.$legal->mention.'</td>';
+	print '<td width="50%">'.$legal->mention.'</td>';
+	print '<td width="5%">'.$legal->rang.'</td>';
 	print '<td width="5%">';
 	print '<a href="'.dol_buildpath('/legalnotice/admin/legalnotice_setup.php', 1).'?id='.$legal->id.'">'.img_picto('', 'edit').'</a>';
 	print '&nbsp;<a onclick=\'return confirm("'.addslashes($langs->trans('LegalNoticeDeleteConfirm')).'")\' href="'.dol_buildpath('/legalnotice/admin/legalnotice_setup.php', 1).'?id='.$legal->id.'&action=delete">'.img_picto('', 'delete').'</a>';

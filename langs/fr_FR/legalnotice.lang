@@ -14,10 +14,13 @@ legalnotice_Country=Pays
 legalnotice_ProductType=Type produit applicable
 legalnotice_VATused=Assujetti à la TVA
 legalnotice_Notice=Mention
+legalnotice_Rang=Rang
 AllCountry=Tous les pays
 LegalNoticeDeleteConfirm=Êtes-vous sûr de vouloir supprimer cette mention ?
 
-Both=Les deux
+LegalNoticeProductAndService=Produit ET Service
+LegalNoticeProductOrService=Produit OU Service
+LegalNoticeWhatEver=Peu importe
 
 LegalNotice_FieldCountryRequired=Erreur : champ "Pays" obligatoire
 LegalNotice_FieldProductTypeRequired=Erreur : champ "Type produit" obligatoire

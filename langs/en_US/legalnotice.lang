@@ -14,10 +14,13 @@ legalnotice_Country=Country
 legalnotice_ProductType=Product type
 legalnotice_VATused=VAT used
 legalnotice_Notice=Legal notice
+legalnotice_Rang=Rank
 AllCountry=All countries
 LegalNoticeDeleteConfirm=Are you sure to delete this legal notice?
 
-Both=Both
+ProductAndService=Product AND Service
+ProductOrService=Product OR Service
+WhatEver=Whatever
 
 LegalNotice_FieldCountryRequired=Error: field "Country" required
 LegalNotice_FieldProductTypeRequired=Error: field "Product type" required

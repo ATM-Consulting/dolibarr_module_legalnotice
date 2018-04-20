@@ -76,27 +76,27 @@ class ActionsLegalNotice
 			dol_include_once('/legalnotice/config.php');
 			dol_include_once('/legalnotice/class/legalnotice.class.php');
 
-			$outputlangs = $parameters['outputlangs'];
-			$outputlangs->load('legalnotice@legalnotice');
-
 			if(empty($object->thidparty->id)) $object->fetch_thirdparty();
 			if(empty($object->lines)) $object->fetch_lines();
 
 			$TType = array();
-			// On parcours toutes les lignes de la facture
+			// On parcours toutes les lignes de la facture pour connaitre les types de produit présent
 			foreach($object->lines as &$line) $TType[$line->product_type] = true;
 
-			if(count($TType) == 2) $product_type = -1;
+			if (count($TType) == 2) $product_type = -1;
 			else if(isset($TType[0])) $product_type = 0;
 			else $product_type = 1;
 
 			$legal = new LegalNotice($this->db);
 			$TLegalNotice = $legal->fetchAll();
 
-			foreach($TLegalNotice as &$legalNotice) {
-				if($object->thirdparty->tva_assuj != $legalNotice->is_assuj_tva && $legalNotice->is_assuj_tva != -1) continue;
-				if($object->thirdparty->country_id != $legalNotice->fk_country && $legalNotice->fk_country != -1) continue;
-				if($product_type != $legalNotice->product_type) continue;
+			foreach($TLegalNotice as &$legalNotice)
+			{
+				var_dump($legalNotice->id);exit;
+				if ($object->thirdparty->tva_assuj != $legalNotice->is_assuj_tva && $legalNotice->is_assuj_tva != -1) continue;
+				if ($object->thirdparty->country_id != $legalNotice->fk_country && $legalNotice->fk_country != -1) continue;
+				// -2 = Produit OU Service, donc on considère que c'est OK dans tout les cas et qu'il ne faut pas faire un "continue"
+				if ($product_type != $legalNotice->product_type && $legalNotice->product_type != -2) continue;
 
 				if(! empty($conf->global->INVOICE_FREE_TEXT)) $conf->global->INVOICE_FREE_TEXT .= "\n<br />";
 				$conf->global->INVOICE_FREE_TEXT .= $legalNotice->mention;
