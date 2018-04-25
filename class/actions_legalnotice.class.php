@@ -89,11 +89,11 @@ class ActionsLegalNotice
 
 			$legal = new LegalNotice($this->db);
 			$TLegalNotice = $legal->fetchAll();
-
+			
 			foreach($TLegalNotice as &$legalNotice)
 			{
 				if ($object->thirdparty->tva_assuj != $legalNotice->is_assuj_tva && $legalNotice->is_assuj_tva != -1) continue;
-				if ($object->thirdparty->country_id != $legalNotice->fk_country && $legalNotice->fk_country != -1) continue;
+				if (!in_array($object->thirdparty->country_id, $legalNotice->fk_country) && !in_array(-1, $legalNotice->fk_country)) continue;
 				// -2 = Produit OU Service, donc on considère que c'est OK dans tout les cas et qu'il ne faut pas faire un "continue"
 				if ($product_type != $legalNotice->product_type && $legalNotice->product_type != -2) continue;
 

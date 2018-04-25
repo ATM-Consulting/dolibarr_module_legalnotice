@@ -36,6 +36,16 @@ class LegalNotice extends SeedObject
 		$this->entity = $conf->entity;
 	}
 	
+	public function fetch($id, $loadChild = true)
+	{
+		$res = parent::fetch($id, $loadChild);
+		
+		if (empty($this->fk_country)) $this->fk_country = array();
+		else $this->fk_country = explode(',', $this->fk_country);
+		
+		return $res;
+	}
+	
 	public function fetchAll()
 	{
 		$TLegalNotice = array();

@@ -224,7 +224,7 @@ print '</tr>';
 
 $var=!$var;
 print '<tr '.$bc[$var].'>';
-print '<td>'.$form->multiselectarray('fk_country', $TCountry, (!empty($object->fk_country) ? explode(',', $object->fk_country) : array(-1)), 0, 0, 'minwidth200').'</td>';
+print '<td>'.$form->multiselectarray('fk_country', $TCountry, (!empty($object->fk_country) ? $object->fk_country : array(-1)), 0, 0, 'minwidth200').'</td>';
 print '<td>'.$form->selectarray('product_type', $TProductType, $object->product_type).'</td>';
 print '<td>'.$form->selectarray('is_assuj_tva', $TVATused, $object->is_assuj_tva).'</td>';
 print '<td>';
@@ -254,8 +254,7 @@ foreach ($TLegalNotice as &$legal)
 {
 	$var=!$var;
 	print '<tr '.$bc[$var].'>';
-	$TKey = explode(',', $legal->fk_country);
-	$intersect = array_intersect(array_keys($TCountry), $TKey);
+	$intersect = array_intersect(array_keys($TCountry), $legal->fk_country);
 	print '<td width="20%">';
 	foreach ($intersect as $key)
 	{
