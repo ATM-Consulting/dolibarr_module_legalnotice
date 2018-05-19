@@ -64,7 +64,7 @@ class ActionsLegalNotice
 	{
 		return 0;
 	}
-	
+
 	function beforePDFCreation($parameters, &$object, &$action, $hookmanager)
 	{
 		global $conf;
@@ -89,11 +89,12 @@ class ActionsLegalNotice
 
 			$legal = new LegalNotice($this->db);
 			$TLegalNotice = $legal->fetchAll();
-			
+
 			foreach($TLegalNotice as &$legalNotice)
 			{
 				if ($object->thirdparty->tva_assuj != $legalNotice->is_assuj_tva && $legalNotice->is_assuj_tva != -1) continue;
 				if (!in_array($object->thirdparty->country_id, $legalNotice->fk_country) && !in_array(-1, $legalNotice->fk_country)) continue;
+				if (!in_array($object->thirdparty->typent_id, $legalNotice->fk_typent) && !in_array(-1, $legalNotice->fk_typent)) continue;
 				// -2 = Produit OU Service, donc on considère que c'est OK dans tout les cas et qu'il ne faut pas faire un "continue"
 				if ($product_type != $legalNotice->product_type && $legalNotice->product_type != -2) continue;
 
@@ -102,7 +103,7 @@ class ActionsLegalNotice
 				break;	// On s'arrête à la première mention légale qui réunit toutes les conditions
 			}
 		}
-		
+
 		return 0;
 	}
 }
