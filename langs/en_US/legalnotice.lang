@@ -12,6 +12,7 @@ LegalNoticePDF=Legal notice:
 # ADMIN
 legalnotice_Country=Country
 legalnotice_ProductType=Product type
+legalnotice_Typent=Third party type
 legalnotice_VATused=VAT used
 legalnotice_Notice=Legal notice
 legalnotice_Rang=Rank
@@ -24,5 +25,6 @@ WhatEver=Whatever
 
 LegalNotice_FieldCountryRequired=Error: field "Country" required
 LegalNotice_FieldProductTypeRequired=Error: field "Product type" required
+LegalNotice_FieldTypentRequired=Error: field "Third party type" required
 LegalNotice_FieldVATUsedRequired=Error: field "VAT used" required
 LegalNotice_FieldMentionRequired=Error: field "Legal notice" required
