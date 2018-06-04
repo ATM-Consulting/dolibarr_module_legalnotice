@@ -65,7 +65,7 @@ if (preg_match('/set_(.*)/',$action,$reg))
 		dol_print_error($db);
 	}
 }
-	
+
 if (preg_match('/del_(.*)/',$action,$reg))
 {
 	$code=$reg[1];
@@ -83,33 +83,37 @@ if (preg_match('/del_(.*)/',$action,$reg))
 if ($action == 'save')
 {
 	$error = 0;
-	
+
 	$fk_country = GETPOST('fk_country');
 	$product_type = (int) GETPOST('product_type');
 	$is_assuj_tva = (int) GETPOST('is_assuj_tva');
+  $fk_typent = GETPOST('fk_typent');
 	$mention = GETPOST('mention');
 	$rang = (int) GETPOST('rang');
-	
-	if (is_array($fk_country)) $fk_country = implode(',', $fk_country);
+
+	if (is_array($fk_typent)) $fk_typent = implode(',', $fk_typent);
+	if (strpos($fk_typent, '-1') !== false) $fk_typent = '-1';
+  if (is_array($fk_country)) $fk_country = implode(',', $fk_country);
 	if (strpos($fk_country, '-1') !== false) $fk_country = '-1'; // évite de selectionner la valeur "all" avec des pays
-	
+	if (empty($fk_typent)) { setEventMessage($langs->trans('LegalNotice_FieldTypentRequired'), 'errors'); $error++; }
 	if (empty($fk_country)) { setEventMessage($langs->trans('LegalNotice_FieldCountryRequired'), 'errors'); $error++; }
 	if (!in_array($product_type, array(-2, -1, 0, 1))) { setEventMessage($langs->trans('LegalNotice_FieldProductTypeRequired'), 'errors'); $error++; }
 	if (!in_array($is_assuj_tva, array(-1, 0, 1))) { setEventMessage($langs->trans('LegalNotice_FieldVATUsedRequired'), 'errors'); $error++; }
 	if (empty($mention)) { setEventMessage($langs->trans('LegalNotice_FieldMentionRequired'), 'errors'); $error++; }
-	
-	
+
+
 	if (empty($error))
 	{
-		
+
 		$object->fk_country = $fk_country;
 		$object->product_type = $product_type;
+    $object->fk_typent = $fk_typent;
 		$object->is_assuj_tva = $is_assuj_tva;
 		$object->mention = $mention;
 		$object->rang = $rang;
-		
+
 		$object->create($user);
-		
+
 		header('Location: '.dol_buildpath('/legalnotice/admin/legalnotice_setup.php', 1));
 		exit;
 	}
@@ -117,7 +121,7 @@ if ($action == 'save')
 else if ($action == 'delete')
 {
 	$object->delete($user);
-	
+
 	header('Location: '.dol_buildpath('/legalnotice/admin/legalnotice_setup.php', 1));
 	exit;
 }
@@ -203,6 +207,25 @@ else
 	dol_print_error($db);
 }
 
+$TTypent = array('-1' => $langs->trans('ContactsAllShort'));
+
+$sql = 'SELECT id, libelle, code';
+$sql.= ' FROM '.MAIN_DB_PREFIX.'c_typent';
+$sql.= ' WHERE active > 0 AND id > 0';
+$resql = $db->query($sql);
+
+if ($resql)
+{
+	while ($obj = $db->fetch_object($resql))
+	{
+		$TTypent[$obj->id] = ($obj->code && $langs->transnoentitiesnoconv($obj->code)!=$obj->code?$langs->transnoentitiesnoconv($obj->code):($obj->libelle!='-'?$obj->libelle:''));
+	}
+}
+else
+{
+	dol_print_error($db);
+}
+
 $TProductType = array(0 => $langs->trans('Product'), 1 => $langs->trans('Service'), -1 => $langs->trans('LegalNoticeProductAndService'), -2 => $langs->trans('LegalNoticeProductOrService'));
 $TVATused = array(0 => $langs->trans('No'), 1 => $langs->trans('Yes'), -1 => $langs->trans('LegalNoticeWhatEver'));
 
@@ -216,8 +239,9 @@ print '<table class="noborder" width="100%">';
 print '<tr class="liste_titre">';
 print '<td width="20%">'.$langs->trans("legalnotice_Country").'</td>';
 print '<td width="10%">'.$langs->trans("legalnotice_ProductType").'</td>';
+print '<td width="10%">'.$langs->trans("legalnotice_Typent").'</td>';
 print '<td width="10%">'.$langs->trans("legalnotice_VATused").'</td>';
-print '<td width="50%">'.$langs->trans("legalnotice_Notice").'</td>';
+print '<td width="40%">'.$langs->trans("legalnotice_Notice").'</td>';
 print '<td width="5%">'.$langs->trans("legalnotice_Rang").'</td>';
 print '<td width="5%">&nbsp;</td>';
 print '</tr>';
@@ -226,6 +250,7 @@ $var=!$var;
 print '<tr '.$bc[$var].'>';
 print '<td>'.$form->multiselectarray('fk_country', $TCountry, (!empty($object->fk_country) ? $object->fk_country : array(-1)), 0, 0, 'minwidth200').'</td>';
 print '<td>'.$form->selectarray('product_type', $TProductType, $object->product_type).'</td>';
+print '<td>'.$form->multiselectarray('fk_typent', $TTypent, (!empty($object->fk_typent) ? $object->fk_typent : array(-1)), 0, 0, 'minwidth200').'</td>';
 print '<td>'.$form->selectarray('is_assuj_tva', $TVATused, $object->is_assuj_tva).'</td>';
 print '<td>';
 if (empty($conf->global->PDF_ALLOW_HTML_FOR_FREE_TEXT))
@@ -262,8 +287,15 @@ foreach ($TLegalNotice as &$legal)
 	}
 	print '</td>';
 	print '<td width="10%">'.$TProductType[$legal->product_type].'</td>';
+  $intersect2 = array_intersect(array_keys($TTypent), $legal->fk_typent);
+	print '<td width="10%">';
+	foreach ($intersect2 as $key)
+	{
+		print '<span class="badge">'.$TTypent[$key].'</span>';
+	}
+	print '</td>';
 	print '<td width="10%">'.$TVATused[$legal->is_assuj_tva].'</td>';
-	print '<td width="50%">'.$legal->mention.'</td>';
+	print '<td width="40%">'.$legal->mention.'</td>';
 	print '<td width="5%">'.$legal->rang.'</td>';
 	print '<td width="5%">';
 	print '<a href="'.dol_buildpath('/legalnotice/admin/legalnotice_setup.php', 1).'?id='.$legal->id.'">'.img_picto('', 'edit').'</a>';

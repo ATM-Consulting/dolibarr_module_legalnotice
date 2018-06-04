@@ -16,7 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+Fonctionnalités 
 
-Pour utiliser le script :
-1. Se placer dans le dossier via terminal
-2. exectuer le fichier sh avec les paramètres suivants : nomdumodule numeromodule
+Version 1.0
+1 - Ajouter des mentions légales sur les factures clients
+2 - Personnaliser les mentions en fonction des entreprise assujetis ou non à la TVA
+3 - Personnaliser en fonction du pays de la société cliente
+4 - Personnaliser en fonction du type de produit vendu (produit ou service, produit et service, produit, service)
