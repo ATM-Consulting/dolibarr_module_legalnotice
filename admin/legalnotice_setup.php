@@ -141,7 +141,7 @@ print_fiche_titre($langs->trans($page_name), $linkback);
 $head = legalnoticeAdminPrepareHead();
 dol_fiche_head(
     $head,
-    'settings',
+    'legalnotice',
     $langs->trans("Module104949Name"),
     0,
     "legalnotice@legalnotice"
