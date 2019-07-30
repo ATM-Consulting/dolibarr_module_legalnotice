@@ -31,10 +31,13 @@ function legalnoticeAdminPrepareHead()
 
     $h = 0;
     $head = array();
-
-    $head[$h][0] = dol_buildpath("/legalnotice/admin/legalnotice_setup.php", 1);
+    $head[$h][0] = dol_buildpath("/legalnotice/admin/legalnotice_conf.php", 1);
     $head[$h][1] = $langs->trans("Parameters");
     $head[$h][2] = 'settings';
+    $h++;
+    $head[$h][0] = dol_buildpath("/legalnotice/admin/legalnotice_setup.php", 1);
+    $head[$h][1] = $langs->trans("LegalNotice");
+    $head[$h][2] = 'legalnotice';
     $h++;
     $head[$h][0] = dol_buildpath("/legalnotice/admin/legalnotice_about.php", 1);
     $head[$h][1] = $langs->trans("About");

@@ -68,14 +68,16 @@ class ActionsLegalNotice
 	function beforePDFCreation($parameters, &$object, &$action, $hookmanager)
 	{
 		global $conf;
+
+
+        dol_include_once('/legalnotice/class/legalnotice.class.php');
+
 		$TContext = explode(':', $parameters['context']);
 
 		if (in_array('invoicecard', $TContext))
 		{
 			if (!defined('INC_FROM_DOLIBARR')) define('INC_FROM_DOLIBARR', 1);
-			dol_include_once('/legalnotice/config.php');
-			dol_include_once('/legalnotice/class/legalnotice.class.php');
-
+            dol_include_once('/legalnotice/config.php');
 			if(empty($object->thidparty->id)) $object->fetch_thirdparty();
 			if(empty($object->lines)) $object->fetch_lines();
 
@@ -103,6 +105,21 @@ class ActionsLegalNotice
 				break;	// On s'arrête à la première mention légale qui réunit toutes les conditions
 			}
 		}
+		if(in_array('propalcard', $TContext) && !empty($conf->global->LEGALNOTICE_MULTI_NOTICE_PROPAL) && !empty($object->array_options['options_legalnotice_selected_notice'])) {
+		    $TLegalId = array($object->array_options['options_legalnotice_selected_notice']);
+            if(strpos($object->array_options['options_legalnotice_selected_notice'],',') !== false) $TLegalId = explode(',',$object->array_options['options_legalnotice_selected_notice']);
+
+            if(!empty($TLegalId)) {
+                foreach($TLegalId as $fk_notice) {
+                    $legal = new LegalNotice($this->db);
+                    $legal->fetch($fk_notice);
+                    if(! empty($conf->global->PROPOSAL_FREE_TEXT))$conf->global->PROPOSAL_FREE_TEXT .= "\n<br />";
+                    $conf->global->PROPOSAL_FREE_TEXT .= $legal->mention;
+                }
+            }
+
+
+        }
 
 		return 0;
 	}
