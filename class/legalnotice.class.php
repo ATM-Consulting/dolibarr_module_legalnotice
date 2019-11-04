@@ -37,9 +37,9 @@ class LegalNotice extends SeedObject
 		$this->entity = $conf->entity;
 	}
 
-	public function fetch($id, $loadChild = true)
+	public function fetch($id, $loadChild = true, $ref = NULL)
 	{
-		$res = parent::fetch($id, $loadChild, '');
+		$res = parent::fetch($id, $loadChild, $ref);
 
 		if (empty($this->fk_country)) $this->fk_country = array();
 		elseif(!is_array($this->fk_country)) $this->fk_country = explode(',', $this->fk_country);
