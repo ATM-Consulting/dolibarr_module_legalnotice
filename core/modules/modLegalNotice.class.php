@@ -61,7 +61,7 @@ class modLegalNotice extends DolibarrModules
 		// Module description, used if translation string 'ModuleXXXDesc' not found (where XXX is value of numeric property 'numero' of module)
 		$this->description = "Description of module LegalNotice";
 		// Possible values for version are: 'development', 'experimental', 'dolibarr' or version
-		$this->version = '1.0.1';
+		$this->version = '1.0.2';
 		// Key used in llx_const table to save module status enabled/disabled (where MYMODULE is value of property name of module in uppercase)
 		$this->const_name = 'MAIN_MODULE_'.strtoupper($this->name);
 		// Where to store the module in setup page (0=common,1=interface,2=others,3=very specific)
@@ -91,7 +91,7 @@ class modLegalNotice extends DolibarrModules
 		//							'workflow' => array('WORKFLOW_MODULE1_YOURACTIONTYPE_MODULE2'=>array('enabled'=>'! empty($conf->module1->enabled) && ! empty($conf->module2->enabled)', 'picto'=>'yourpicto@legalnotice')) // Set here all workflow context managed by module
 		//                        );
 		$this->module_parts = array(
-			'hooks' => array('invoicecard')
+			'hooks' => array('invoicecard', 'propalcard')
 		);
 
 		// Data directories to create when module is enabled.
@@ -99,7 +99,7 @@ class modLegalNotice extends DolibarrModules
 		$this->dirs = array();
 
 		// Config pages. Put here list of php page, stored into legalnotice/admin directory, to use to setup module.
-		$this->config_page_url = array("legalnotice_setup.php@legalnotice");
+		$this->config_page_url = array("legalnotice_conf.php@legalnotice");
 
 		// Dependencies
 		$this->hidden = false;			// A condition to hide module
@@ -331,12 +331,16 @@ class modLegalNotice extends DolibarrModules
 	 */
 	function init($options='')
 	{
+	    global $db;
 		$sql = array();
 		
 		define('INC_FROM_DOLIBARR',true);
 
 		dol_include_once('/legalnotice/config.php');
 		dol_include_once('/legalnotice/script/create-maj-base.php');
+
+		$extrafields = new ExtraFields($db);
+		$extrafields->addExtraField('legalnotice_selected_notice','Mentions complémentaires','chkbxlst','100', '', 'propal', 0, 0, '', array('options'=>array('legalnotice:mention:rowid::' => null)),1,'',0);
 
 		$result=$this->_load_tables('/legalnotice/sql/');
 

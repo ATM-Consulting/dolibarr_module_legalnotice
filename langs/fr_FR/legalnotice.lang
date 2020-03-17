@@ -28,3 +28,4 @@ LegalNotice_FieldProductTypeRequired=Erreur : champ "Type produit" obligatoire
 LegalNotice_FieldTypentRequired=Erreur : champ "Type de tiers" obligatoire
 LegalNotice_FieldVATUsedRequired=Erreur : champ "Assujetti TVA" obligatoire
 LegalNotice_FieldMentionRequired=Erreur : champ "Mention" obligatoire
+ManageMultiNoticePropal = Permet de sélectionner une ou plusieurs mentions sur une proposition commerciale
