@@ -51,7 +51,7 @@ class LegalNotice extends SeedObject
 		return $res;
 	}
 
-	public function fetchAll()
+	public function fetchAll($limit = 0, $loadChild = true, $TFilter = array())
 	{
 		$TLegalNotice = array();
 		$sql = 'SELECT rowid FROM '.MAIN_DB_PREFIX.'legalnotice';
