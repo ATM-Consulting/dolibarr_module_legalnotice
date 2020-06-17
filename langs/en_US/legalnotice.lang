@@ -1,3 +1,5 @@
+# legalnotice.langs en_US
+
 Module104949Name = Legals notices
 Module104949Desc = Allow you to define differents notices by country, product type and by client using VAT or not
 
@@ -6,25 +8,28 @@ ATMAbout = This module has been developed by <a href="http://www.atm-consulting.
 LegalNoticeSetup = Legals notices module setup
 LegalNoticeAbout = About Legals notices
 
-LegalNotice=Legal notice
-LegalNoticePDF=Legal notice:
+LegalNotice = Legal notice
+LegalNoticePDF = Legal notice:
 
 # ADMIN
-legalnotice_Country=Country
-legalnotice_ProductType=Product type
-legalnotice_Typent=Third party type
-legalnotice_VATused=VAT used
-legalnotice_Notice=Legal notice
-legalnotice_Rang=Rank
-AllCountry=All countries
-LegalNoticeDeleteConfirm=Are you sure to delete this legal notice?
+legalnotice_Country = Country
+legalnotice_ProductType = Product type
+legalnotice_Typent = Third party type
+legalnotice_VATused = VAT used
+legalnotice_Notice = Legal notice
+legalnotice_Rang = Rank
+AllCountry = All countries
+LegalNoticeDeleteConfirm = Are you sure to delete this legal notice?
 
-ProductAndService=Product AND Service
-ProductOrService=Product OR Service
-WhatEver=Whatever
+ProductAndService = Product AND Service
+ProductOrService = Product OR Service
+WhatEver = Whatever
 
-LegalNotice_FieldCountryRequired=Error: field "Country" required
-LegalNotice_FieldProductTypeRequired=Error: field "Product type" required
-LegalNotice_FieldTypentRequired=Error: field "Third party type" required
-LegalNotice_FieldVATUsedRequired=Error: field "VAT used" required
-LegalNotice_FieldMentionRequired=Error: field "Legal notice" required
+LegalNotice_FieldCountryRequired = Error: field "Country" required
+LegalNotice_FieldProductTypeRequired = Error: field "Product type" required
+LegalNotice_FieldTypentRequired = Error: field "Third party type" required
+LegalNotice_FieldVATUsedRequired = Error: field "VAT used" required
+LegalNotice_FieldMentionRequired = Error: field "Legal notice" required
+
+
+ManageMultiNoticePropal = Allows you to select one or more mentions on a commercial proposal.
