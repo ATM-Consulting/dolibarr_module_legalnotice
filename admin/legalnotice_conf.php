@@ -123,7 +123,7 @@ print '<td>'.$langs->trans("ManageMultiNoticePropal").'</td>';
 print '<td align="center" width="20">&nbsp;</td>';
 print '<td align="right" width="300">';
 print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">';
-print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+print '<input type="hidden" name="token" value="'.newToken().'">';
 print '<input type="hidden" name="action" value="set_LEGALNOTICE_MULTI_NOTICE_PROPAL">';
 print $form->selectyesno("LEGALNOTICE_MULTI_NOTICE_PROPAL",$conf->global->LEGALNOTICE_MULTI_NOTICE_PROPAL,1);
 print '<input type="submit" class="button" value="'.$langs->trans("Modify").'">';
@@ -136,7 +136,7 @@ print '</td></tr>';
 //print '<td align="center" width="20">&nbsp;</td>';
 //print '<td align="center" width="300">';
 //print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">'; // Keep form because ajax_constantonoff return single link with <a> if the js is disabled
-//print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+//print '<input type="hidden" name="token" value="'.newToken().'">';
 //print '<input type="hidden" name="action" value="set_CONSTNAME">';
 //print ajax_constantonoff('CONSTNAME');
 //print '</form>';
