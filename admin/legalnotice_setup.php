@@ -88,7 +88,7 @@ if ($action == 'save')
 	$product_type = (int) GETPOST('product_type');
 	$is_assuj_tva = (int) GETPOST('is_assuj_tva');
   $fk_typent = GETPOST('fk_typent');
-	$mention = GETPOST('mention');
+	$mention = dol_html_entity_decode(GETPOST('mention', 'restricthtml'), ENT_QUOTES | ENT_HTML5, 'UTF-8', 1); // as well as dolibarr do for public notes and private notes
 	$rang = (int) GETPOST('rang');
 
 	if (is_array($fk_typent)) $fk_typent = implode(',', $fk_typent);
