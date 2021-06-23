@@ -228,11 +228,13 @@ else
 
 $TProductType = array(0 => $langs->trans('Product'), 1 => $langs->trans('Service'), -1 => $langs->trans('LegalNoticeProductAndService'), -2 => $langs->trans('LegalNoticeProductOrService'));
 $TVATused = array(0 => $langs->trans('No'), 1 => $langs->trans('Yes'), -1 => $langs->trans('LegalNoticeWhatEver'));
+$newToken = function_exists('newToken')?newToken():$_SESSION['newtoken'];
+
 
 print '<form method="POST" action="'.$_SERVER['PHP_SELF'].'">'; // Keep form because ajax_constantonoff return single link with <a> if the js is disabled
 print '<input type="hidden" name="action" value="save" />';
 if (!empty($object->id)) print '<input type="hidden" name="id" value="'.$object->id.'" />';
-print '<input name="token" value="'.newToken().'" type="hidden">';
+print '<input name="token" value="'.$newToken.'" type="hidden">';
 
 print '<table class="noborder" width="100%">';
 
