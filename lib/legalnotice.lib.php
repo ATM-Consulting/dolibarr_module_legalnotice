@@ -52,7 +52,7 @@ function legalnoticeAdminPrepareHead()
     //$this->tabs = array(
     //	'entity:-tabname:Title:@legalnotice:/legalnotice/mypage.php?id=__ID__'
     //); // to remove a tab
-    complete_head_from_modules($conf, $langs, $object, $head, $h, 'legalnotice');
+    complete_head_from_modules($conf, $langs, null, $head, $h, 'legalnotice');
 
     return $head;
 }
@@ -72,13 +72,13 @@ function legalnotice_prepare_head(TLegalNotice $object)
     $head[$h][1] = $langs->trans("LegalNoticeCard");
     $head[$h][2] = 'card';
     $h++;
-	
+
 	// Show more tabs from modules
     // Entries must be declared in modules descriptor with line
     // $this->tabs = array('entity:+tabname:Title:@legalnotice:/legalnotice/mypage.php?id=__ID__');   to add new tab
     // $this->tabs = array('entity:-tabname:Title:@legalnotice:/legalnotice/mypage.php?id=__ID__');   to remove a tab
     complete_head_from_modules($conf,$langs,$object,$head,$h,'legalnotice');
-	
+
 	return $head;
 }
 
