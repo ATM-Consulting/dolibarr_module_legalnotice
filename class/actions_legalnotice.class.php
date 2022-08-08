@@ -108,7 +108,7 @@ class ActionsLegalNotice
 		if(in_array('propalcard', $TContext) && !empty($conf->global->LEGALNOTICE_MULTI_NOTICE_PROPAL) && !empty($object->array_options['options_legalnotice_selected_notice'])) {
 		    $TLegalId = array($object->array_options['options_legalnotice_selected_notice']);
             if(strpos($object->array_options['options_legalnotice_selected_notice'],',') !== false) $TLegalId = explode(',',$object->array_options['options_legalnotice_selected_notice']);
-
+			if(empty($conf->global->PROPOSAL_FREE_TEXT)) $conf->global->PROPOSAL_FREE_TEXT = '';
             if(!empty($TLegalId)) {
                 foreach($TLegalId as $fk_notice) {
                     $legal = new LegalNotice($this->db);
