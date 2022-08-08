@@ -247,7 +247,7 @@ print '<td width="40%">'.$langs->trans("legalnotice_Notice").'</td>';
 print '<td width="5%">'.$langs->trans("legalnotice_Rang").'</td>';
 print '<td width="5%">&nbsp;</td>';
 print '</tr>';
-
+$var = 0;
 $var=!$var;
 print '<tr '.$bc[$var].'>';
 print '<td>'.$form->multiselectarray('fk_country', $TCountry, (!empty($object->fk_country) ? $object->fk_country : array(-1)), 0, 0, 'minwidth200').'</td>';
@@ -288,6 +288,8 @@ foreach ($TLegalNotice as &$legal)
 		print '<span class="badge">'.$TCountry[$key].'</span>';
 	}
 	print '</td>';
+	if(empty($TProductType[$legal->product_type])) $TProductType[$legal->product_type] = '';
+	if(empty($TVATused[$legal->is_assuj_tva])) $TVATused[$legal->is_assuj_tva] = '';
 	print '<td width="10%">'.$TProductType[$legal->product_type].'</td>';
   $intersect2 = array_intersect(array_keys($TTypent), $legal->fk_typent);
 	print '<td width="10%">';
@@ -301,7 +303,7 @@ foreach ($TLegalNotice as &$legal)
 	print '<td width="5%">'.$legal->rang.'</td>';
 	print '<td width="5%">';
 	print '<a href="'.dol_buildpath('/legalnotice/admin/legalnotice_setup.php', 1).'?id='.$legal->id.'">'.img_picto('', 'edit').'</a>';
-	print '&nbsp;<a onclick=\'return confirm("'.addslashes($langs->trans('LegalNoticeDeleteConfirm')).'")\' href="'.dol_buildpath('/legalnotice/admin/legalnotice_setup.php', 1).'?id='.$legal->id.'&action=delete">'.img_picto('', 'delete').'</a>';
+	print '&nbsp;<a onclick=\'return confirm("'.addslashes($langs->trans('LegalNoticeDeleteConfirm')).'")\' href="'.dol_buildpath('/legalnotice/admin/legalnotice_setup.php', 1).'?id='.$legal->id.'&action=delete&token='.$newToken.'">'.img_picto('', 'delete').'</a>';
 	print '</td>';
 	print '</tr>';
 }
