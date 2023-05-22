@@ -87,18 +87,23 @@ if ($action == 'save')
 	$fk_country = GETPOST('fk_country');
 	$product_type = (int) GETPOST('product_type');
 	$is_assuj_tva = (int) GETPOST('is_assuj_tva');
-  $fk_typent = GETPOST('fk_typent');
+    $fk_typent = GETPOST('fk_typent');
 	$mention = dol_html_entity_decode(GETPOST('mention', 'restricthtml'), ENT_QUOTES | ENT_HTML5, 'UTF-8', 1); // as well as dolibarr do for public notes and private notes
 	$rang = (int) GETPOST('rang');
 
 	if (is_array($fk_typent)) $fk_typent = implode(',', $fk_typent);
-	if (strpos($fk_typent, '-1') !== false) $fk_typent = '-1';
-  if (is_array($fk_country)) $fk_country = implode(',', $fk_country);
-	if (strpos($fk_country, '-1') !== false) $fk_country = '-1'; // évite de selectionner la valeur "all" avec des pays
+    if (strpos($fk_typent, '-1') !== false) $fk_typent = '-1';
+    if (is_array($fk_country)) $fk_country = implode(',', $fk_country);
+    if (strpos($fk_country, '-1') !== false) $fk_country = '-1'; // évite de selectionner la valeur "all" avec des pays
+
 	if (empty($fk_typent)) { setEventMessage($langs->trans('LegalNotice_FieldTypentRequired'), 'errors'); $error++; }
 	if (empty($fk_country)) { setEventMessage($langs->trans('LegalNotice_FieldCountryRequired'), 'errors'); $error++; }
-	if (!in_array($product_type, array(-2, -1, 0, 1))) { setEventMessage($langs->trans('LegalNotice_FieldProductTypeRequired'), 'errors'); $error++; }
-	if (!in_array($is_assuj_tva, array(-1, 0, 1))) { setEventMessage($langs->trans('LegalNotice_FieldVATUsedRequired'), 'errors'); $error++; }
+    // Du au changement des valeurs dans les tableaux $TProducType et $TVATused
+    // il faut changer les valeurs de tests ici
+	if (!in_array($product_type, array(0, 1, 2, 3))) { setEventMessage
+    ($langs->trans('LegalNotice_FieldProductTypeRequired'), 'errors'); $error++; }
+	if (!in_array($is_assuj_tva, array(0, 1, 2))) { setEventMessage
+    ($langs->trans('LegalNotice_FieldVATUsedRequired'), 'errors'); $error++; }
 	if (empty($mention)) { setEventMessage($langs->trans('LegalNotice_FieldMentionRequired'), 'errors'); $error++; }
 
 
@@ -107,7 +112,7 @@ if ($action == 'save')
 
 		$object->fk_country = $fk_country;
 		$object->product_type = $product_type;
-    $object->fk_typent = $fk_typent;
+        $object->fk_typent = $fk_typent;
 		$object->is_assuj_tva = $is_assuj_tva;
 		$object->mention = $mention;
 		$object->rang = $rang;
@@ -187,7 +192,6 @@ print '</td></tr>';
 print '</table>';
 print '<br />';
 */
-
 $TCountry = array('-1' => $langs->trans('AllCountry'));
 
 $sql = 'SELECT rowid, code as code_iso, label';
@@ -206,7 +210,6 @@ else
 {
 	dol_print_error($db);
 }
-
 $TTypent = array('-1' => $langs->trans('ContactsAllShort'));
 
 $sql = 'SELECT id, libelle, code';
@@ -225,9 +228,20 @@ else
 {
 	dol_print_error($db);
 }
+// Le -1 est utilisé afin d'appliquer un style spécifique aux champs de types
+// select depuis la V15, il faut donc changer les valeurs des ProductType
+// $TProductType = array(0 => $langs->trans('Product'), 1 => $langs->trans('Service'), -1 => $langs->trans('LegalNoticeProductAndService'), -2 => $langs->trans('LegalNoticeProductOrService'));
+$TProductType = array(  0 => $langs->trans('Product'),
+                        1 => $langs->trans('Service'),
+                        2 => $langs->trans('LegalNoticeProductAndService'),
+                        3 => $langs->trans('LegalNoticeProductOrService'));
 
-$TProductType = array(0 => $langs->trans('Product'), 1 => $langs->trans('Service'), -1 => $langs->trans('LegalNoticeProductAndService'), -2 => $langs->trans('LegalNoticeProductOrService'));
-$TVATused = array(0 => $langs->trans('No'), 1 => $langs->trans('Yes'), -1 => $langs->trans('LegalNoticeWhatEver'));
+// Même chose pour le choix de la tva
+//$TVATused = array(0 => $langs->trans('No'), 1 => $langs->trans('Yes'), -1 => $langs->trans('LegalNoticeWhatEver'));
+$TVATused = array(  0 => $langs->trans('No'),
+                    1 => $langs->trans('Yes'),
+                    2 => $langs->trans('LegalNoticeWhatEver'));
+
 $newToken = function_exists('newToken')?newToken():$_SESSION['newtoken'];
 
 

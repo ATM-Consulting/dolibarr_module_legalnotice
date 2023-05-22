@@ -85,7 +85,9 @@ class ActionsLegalNotice
 			// On parcours toutes les lignes de la facture pour connaitre les types de produit présent
 			foreach($object->lines as &$line) $TType[$line->product_type] = true;
 
-			if (count($TType) == 2) $product_type = -1;
+            //  Je change la valeur de -1 à 2 car les valeurs ont été
+            // modifiées dans le tableau des valeurs des types de produits
+			if (count($TType) == 2) $product_type = 2;
 			else if(isset($TType[0])) $product_type = 0;
 			else $product_type = 1;
 
@@ -94,11 +96,14 @@ class ActionsLegalNotice
 
 			foreach($TLegalNotice as &$legalNotice)
 			{
-				if ($object->thirdparty->tva_assuj != $legalNotice->is_assuj_tva && $legalNotice->is_assuj_tva != -1) continue;
+				if ($object->thirdparty->tva_assuj !=
+                    $legalNotice->is_assuj_tva && $legalNotice->is_assuj_tva != 2) continue;
 				if (!in_array($object->thirdparty->country_id, $legalNotice->fk_country) && !in_array(-1, $legalNotice->fk_country)) continue;
 				if (!in_array($object->thirdparty->typent_id, $legalNotice->fk_typent) && !in_array(-1, $legalNotice->fk_typent)) continue;
-				// -2 = Produit OU Service, donc on considère que c'est OK dans tout les cas et qu'il ne faut pas faire un "continue"
-				if ($product_type != $legalNotice->product_type && $legalNotice->product_type != -2) continue;
+				// 3 = Produit OU Service, donc on considère que c'est OK
+                // dans tous les cas et qu'il ne faut pas faire un "continue"
+				if ($product_type != $legalNotice->product_type &&
+                    $legalNotice->product_type != 3) continue;
 
 				if(! empty($conf->global->INVOICE_FREE_TEXT)) $conf->global->INVOICE_FREE_TEXT .= "\n<br />";
 				$conf->global->INVOICE_FREE_TEXT .= $legalNotice->mention;
