@@ -231,16 +231,20 @@ else
 // Le -1 est utilisé afin d'appliquer un style spécifique aux champs de types
 // select depuis la V15, il faut donc changer les valeurs des ProductType
 // $TProductType = array(0 => $langs->trans('Product'), 1 => $langs->trans('Service'), -1 => $langs->trans('LegalNoticeProductAndService'), -2 => $langs->trans('LegalNoticeProductOrService'));
-$TProductType = array(  0 => $langs->trans('Product'),
+$TProductType = array(
+                        0 => $langs->trans('Product'),
                         1 => $langs->trans('Service'),
                         2 => $langs->trans('LegalNoticeProductAndService'),
-                        3 => $langs->trans('LegalNoticeProductOrService'));
+                        3 => $langs->trans('LegalNoticeProductOrService')
+                );
 
 // Même chose pour le choix de la tva
 //$TVATused = array(0 => $langs->trans('No'), 1 => $langs->trans('Yes'), -1 => $langs->trans('LegalNoticeWhatEver'));
-$TVATused = array(  0 => $langs->trans('No'),
+$TVATused = array(
+                    0 => $langs->trans('No'),
                     1 => $langs->trans('Yes'),
-                    2 => $langs->trans('LegalNoticeWhatEver'));
+                    2 => $langs->trans('LegalNoticeWhatEver')
+            );
 
 $newToken = function_exists('newToken')?newToken():$_SESSION['newtoken'];
 
