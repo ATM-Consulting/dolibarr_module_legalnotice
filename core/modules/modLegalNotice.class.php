@@ -338,6 +338,7 @@ class modLegalNotice extends DolibarrModules
 
 		dol_include_once('/legalnotice/config.php');
 		dol_include_once('/legalnotice/script/create-maj-base.php');
+        dol_include_once('/legalnotice/script/updateDatabase.php');
 
 		$extrafields = new ExtraFields($db);
 		$extrafields->addExtraField('legalnotice_selected_notice','Mentions complémentaires','chkbxlst','100', '', 'propal', 0, 0, '', array('options'=>array('legalnotice:mention:rowid::' => null)),1,'',0);
@@ -345,6 +346,8 @@ class modLegalNotice extends DolibarrModules
 		$result=$this->_load_tables('/legalnotice/sql/');
 
 		return $this->_init($sql, $options);
+
+
 	}
 
 	/**
