@@ -9,14 +9,26 @@ require_once DOL_DOCUMENT_ROOT . "/core/lib/admin.lib.php";
 
 dol_include_once('/legalnotice/class/legalnotice.class.php');
 
+global $db;
+
+$sql= ' SELECT note';
+$sql.=' FROM '.MAIN_DB_PREFIX.'const';
+$sql.= ' WHERE name = "MAIN_MODULE_LEGALNOTICE"' ;
+$resql = $db->query($sql);
+
+if ($resql) {
+    $obj = $db->fetch_object($resql);
+    $object = json_decode($obj->note);
+}
+
+if ($object->lastactivationversion <= '1.0.6' ) {
+    updateDatabase();
+}
+
+
 function updateDatabase() {
 
     global $db;
-
-    $sql= ' SELECT note';
-    $sql.=' FROM '.MAIN_DB_PREFIX.'const';
-    $sql.= ' WHERE name = "MAIN_MODULE_LEGALNOTICE"' ;
-    $resql = $db->query($sql);
 
     $LegalNotice = new LegalNotice($db);
     $TLegalNotices = $LegalNotice->fetchAll();
@@ -48,5 +60,4 @@ function updateDatabase() {
     }
 }
 
-updateDatabase();
 
