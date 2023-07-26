@@ -87,7 +87,7 @@ if ($action == 'save')
 	$fk_country = GETPOST('fk_country');
 	$product_type = (int) GETPOST('product_type');
 	$is_assuj_tva = (int) GETPOST('is_assuj_tva');
-    $fk_typent = GETPOST('fk_typent');
+	$fk_typent = GETPOST('fk_typent');
 	$mention = dol_html_entity_decode(GETPOST('mention', 'restricthtml'), ENT_QUOTES | ENT_HTML5, 'UTF-8', 1); // as well as dolibarr do for public notes and private notes
 	$rang = (int) GETPOST('rang');
 
@@ -100,12 +100,9 @@ if ($action == 'save')
 	if (empty($fk_country)) { setEventMessage($langs->trans('LegalNotice_FieldCountryRequired'), 'errors'); $error++; }
     // Du au changement des valeurs dans les tableaux $TProducType et $TVATused
     // il faut changer les valeurs de tests ici
-	if (!in_array($product_type, array(0, 1, 2, 3))) { setEventMessage
-    ($langs->trans('LegalNotice_FieldProductTypeRequired'), 'errors'); $error++; }
-	if (!in_array($is_assuj_tva, array(0, 1, 2))) { setEventMessage
-    ($langs->trans('LegalNotice_FieldVATUsedRequired'), 'errors'); $error++; }
+	if (!in_array($product_type, array(0, 1, 2, 3))) { setEventMessage($langs->trans('LegalNotice_FieldProductTypeRequired'), 'errors'); $error++; }
+	if (!in_array($is_assuj_tva, array(0, 1, 2))) { setEventMessage($langs->trans('LegalNotice_FieldVATUsedRequired'), 'errors'); $error++; }
 	if (empty($mention)) { setEventMessage($langs->trans('LegalNotice_FieldMentionRequired'), 'errors'); $error++; }
-
 
 	if (empty($error))
 	{

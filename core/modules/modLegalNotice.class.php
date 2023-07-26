@@ -338,16 +338,19 @@ class modLegalNotice extends DolibarrModules
 
 		dol_include_once('/legalnotice/config.php');
 		dol_include_once('/legalnotice/script/create-maj-base.php');
-        dol_include_once('/legalnotice/script/updateDatabase.php');
+		if ($this->needUpdate('1.0.6')) {
+			dol_include_once('/legalnotice/script/updateDatabase.php');
+		}
 
 		$extrafields = new ExtraFields($db);
 		$extrafields->addExtraField('legalnotice_selected_notice','Mentions complémentaires','chkbxlst','100', '', 'propal', 0, 0, '', array('options'=>array('legalnotice:mention:rowid::' => null)),1,'',0);
 
 		$result=$this->_load_tables('/legalnotice/sql/');
 
+		dolibarr_set_const($this->db, 'CLIEUROCHEF_MOD_LAST_RELOAD_VERSION', $this->version, 'chaine', 0, '', 0);
+
 		return $this->_init($sql, $options);
-
-
+		
 	}
 
 	/**
@@ -363,6 +366,25 @@ class modLegalNotice extends DolibarrModules
 		$sql = array();
 
 		return $this->_remove($sql, $options);
+	}
+
+	/**
+	 * Compare
+	 *
+	 * @param string $targetVersion numéro de version pour lequel il faut faire la comparaison
+	 * @return bool
+	 */
+	public function needUpdate($targetVersion){
+		global $conf;
+		if (empty($conf->global->MAIN_MODULE_LEGALNOTICE)) {
+			return true;
+		}
+
+		if(versioncompare(explode('.',$targetVersion), explode('.', $conf->global->MAIN_MODULE_LEGALNOTICE))>0){
+			return true;
+		}
+
+		return false;
 	}
 
 }
