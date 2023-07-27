@@ -20,7 +20,7 @@ require_once DOL_DOCUMENT_ROOT . "/core/lib/admin.lib.php";
 	// on passe à 2 les valeurs des ProductType dont la TVA n'est pas prise en compte
 	updateDatabase($db,'legalnotice', 'is_assuj_tva', -1, 2 );
 
-function updateDatabase($db, $table, $field, $oldValue, $newvalue, $error = 0) {
+function updateDatabase($db, $table, $field, $oldValue, $newvalue) {
 	$sql= ' UPDATE '.MAIN_DB_PREFIX.$table;
 	$sql.= ' SET ' . $field . ' = '. $newvalue ;
 	$sql.= ' WHERE ' . $field . ' = ' .  $oldValue ;
