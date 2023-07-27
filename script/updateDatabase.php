@@ -27,17 +27,13 @@ function updateDatabase($db, $table, $field, $oldValue, $newvalue, $error = 0) {
 
 	$result = $db->query($sql);
 
-	if (!$result) {
-		$error++;
-		dol_syslog($db->lasterror(), LOG_ERR);
-		dol_print_error($db, $db->lasterror());
-		setEventMessages($db->lasterror(), null, 'errors');
-	}
-
-	if (!$error) {
+	if ($result) {
 		$db->commit();
 	} else {
 		$db->rollback();
+		dol_syslog($db->lasterror(), LOG_ERR);
+		dol_print_error($db, $db->lasterror());
+		setEventMessages($db->lasterror(), null, 'errors');
 	}
 
 }
