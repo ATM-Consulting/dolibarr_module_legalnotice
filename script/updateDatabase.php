@@ -29,8 +29,8 @@ function updateDatabase($db, $table, $field, $oldValue, $newvalue, $error = 0) {
 
 	if (!$result) {
 		$error++;
-		dol_syslog("Problème lors du transfert en base", LOG_ERR);
-		dol_print_error($db,"Problème lors du transfert en base");
+		dol_syslog($db->lasterror(), LOG_ERR);
+		dol_print_error($db, $db->lasterror());
 		setEventMessages($db->lasterror(), null, 'errors');
 
 		$result->error[] = $db->lasterror();
