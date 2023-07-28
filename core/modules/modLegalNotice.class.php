@@ -340,6 +340,10 @@ class modLegalNotice extends DolibarrModules
 		dol_include_once('/legalnotice/script/create-maj-base.php');
 		if ($this->needUpdate('1.1.0')) {
 			dol_include_once('/legalnotice/script/updateDatabase.php');
+			$res = runUpdateLegalNoticeTable();
+			if ($res <= 0) {
+				return $res;
+			}
 		}
 
 		$extrafields = new ExtraFields($db);
@@ -347,7 +351,7 @@ class modLegalNotice extends DolibarrModules
 
 		$result=$this->_load_tables('/legalnotice/sql/');
 
-		dolibarr_set_const($this->db, 'CLIEUROCHEF_MOD_LAST_RELOAD_VERSION', $this->version, 'chaine', 0, '', 0);
+		dolibarr_set_const($this->db, 'MAIN_MODULE_LEGALNOTICE', $this->version, 'chaine', 0, '', 0);
 
 		return $this->_init($sql, $options);
 
