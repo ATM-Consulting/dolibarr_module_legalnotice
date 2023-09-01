@@ -61,7 +61,7 @@ class modLegalNotice extends DolibarrModules
 		// Module description, used if translation string 'ModuleXXXDesc' not found (where XXX is value of numeric property 'numero' of module)
 		$this->description = "Description of module LegalNotice";
 		// Possible values for version are: 'development', 'experimental', 'dolibarr' or version
-		$this->version = '1.0.6';
+		$this->version = '1.1.0';
 		// Key used in llx_const table to save module status enabled/disabled (where MYMODULE is value of property name of module in uppercase)
 		$this->const_name = 'MAIN_MODULE_'.strtoupper($this->name);
 		// Where to store the module in setup page (0=common,1=interface,2=others,3=very specific)
@@ -338,13 +338,23 @@ class modLegalNotice extends DolibarrModules
 
 		dol_include_once('/legalnotice/config.php');
 		dol_include_once('/legalnotice/script/create-maj-base.php');
+		if ($this->needUpdate('1.1.0')) {
+			dol_include_once('/legalnotice/script/updateDatabase.php');
+			$res = runUpdateLegalNoticeTable();
+			if ($res <= 0) {
+				return $res;
+			}
+		}
 
 		$extrafields = new ExtraFields($db);
 		$extrafields->addExtraField('legalnotice_selected_notice','Mentions complémentaires','chkbxlst','100', '', 'propal', 0, 0, '', array('options'=>array('legalnotice:mention:rowid::' => null)),1,'',0);
 
 		$result=$this->_load_tables('/legalnotice/sql/');
 
+		dolibarr_set_const($this->db, 'MAIN_MODULE_LEGALNOTICE', $this->version, 'chaine', 0, '', 0);
+
 		return $this->_init($sql, $options);
+
 	}
 
 	/**
@@ -360,6 +370,25 @@ class modLegalNotice extends DolibarrModules
 		$sql = array();
 
 		return $this->_remove($sql, $options);
+	}
+
+	/**
+	 * Compare
+	 *
+	 * @param string $targetVersion numéro de version pour lequel il faut faire la comparaison
+	 * @return bool
+	 */
+	public function needUpdate($targetVersion){
+		global $conf;
+		if (empty($conf->global->MAIN_MODULE_LEGALNOTICE)) {
+			return true;
+		}
+
+		if(versioncompare(explode('.',$targetVersion), explode('.', $conf->global->MAIN_MODULE_LEGALNOTICE))>0){
+			return true;
+		}
+
+		return false;
 	}
 
 }
