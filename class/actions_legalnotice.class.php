@@ -94,11 +94,15 @@ class ActionsLegalNotice
 			$legal = new LegalNotice($this->db);
 			$TLegalNotice = $legal->fetchAll();
 
+			$TCountryUE = $this->search_country_EU();
+
 			foreach($TLegalNotice as &$legalNotice)
 			{
 				if ($object->thirdparty->tva_assuj !=
                     $legalNotice->is_assuj_tva && $legalNotice->is_assuj_tva != 2) continue;
-				if (!in_array($object->thirdparty->country_id, $legalNotice->fk_country) && !in_array(-1, $legalNotice->fk_country)) continue;
+				if (!in_array($object->thirdparty->country_id, $TCountryUE) && !in_array(-2, $legalNotice->fk_country)) continue;
+				var_dump($legalNotice->fk_country);
+				/* PROBLEME !!! */if (!in_array($object->thirdparty->country_id, $legalNotice->fk_country) && !in_array(-1, $legalNotice->fk_country)) continue;
 				if (!in_array($object->thirdparty->typent_id, $legalNotice->fk_typent) && !in_array(-1, $legalNotice->fk_typent)) continue;
 				// 3 = Produit OU Service, donc on considère que c'est OK
                 // dans tous les cas et qu'il ne faut pas faire un "continue"
@@ -127,5 +131,26 @@ class ActionsLegalNotice
         }
 
 		return 0;
+	}
+
+	public function search_country_EU(){
+
+		$sql = " SELECT rowid ";
+		$sql .= " FROM ". MAIN_DB_PREFIX ."c_country ";
+		$sql .= " WHERE eec = 1";
+
+		$resql = $this->db->query($sql);
+
+		if ($resql) {
+			$resultArray = array();
+
+			while ($row = $this->db->fetch_object($resql)) {
+				$resultArray[] = $row->rowid;
+			}
+			return $resultArray;
+		} else {
+			return -1;
+		}
+
 	}
 }
