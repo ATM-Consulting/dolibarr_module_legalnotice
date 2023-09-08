@@ -102,8 +102,7 @@ class ActionsLegalNotice
 				if ($object->thirdparty->tva_assuj !=
                     $legalNotice->is_assuj_tva && $legalNotice->is_assuj_tva != 2) continue;
 				if (!in_array($object->thirdparty->country_id, $TCountryUE) && !in_array($object->thirdparty->country_id, $legalNotice->fk_country) && !in_array(-1, $legalNotice->fk_country) && !in_array(-3, $legalNotice->fk_country)) continue;
-				if (!in_array($object->thirdparty->country_id, $TCountryOutUE) && !in_array($object->thirdparty->country_id, $legalNotice->fk_country) && !in_array(-1, $legalNotice->fk_country)) continue;
-				if (!in_array($object->thirdparty->country_id, $legalNotice->fk_country) && !in_array(-1, $legalNotice->fk_country)) continue;
+				if (!in_array($object->thirdparty->country_id, $TCountryOutUE) && !in_array($object->thirdparty->country_id, $legalNotice->fk_country) && !in_array(-1, $legalNotice->fk_country)&& !in_array(-2, $legalNotice->fk_country)) continue;
 				if (!in_array($object->thirdparty->typent_id, $legalNotice->fk_typent) && !in_array(-1, $legalNotice->fk_typent)) continue;
 				// 3 = Produit OU Service, donc on considère que c'est OK
                 // dans tous les cas et qu'il ne faut pas faire un "continue"
