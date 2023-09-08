@@ -94,15 +94,36 @@ class ActionsLegalNotice
 			$legal = new LegalNotice($this->db);
 			$TLegalNotice = $legal->fetchAll();
 
-			$TCountryUE = $this->search_country_EU();
-			$TCountryOutUE = $this->search_country_Out_EU();
+			$TCountryUE = $this->searchCountryEu();
+			$TCountryOutUE = $this->searchCountryOutEU();
 
 			foreach($TLegalNotice as &$legalNotice)
 			{
 				if ($object->thirdparty->tva_assuj !=
                     $legalNotice->is_assuj_tva && $legalNotice->is_assuj_tva != 2) continue;
-				if (!in_array($object->thirdparty->country_id, $TCountryUE) && !in_array($object->thirdparty->country_id, $legalNotice->fk_country) && !in_array(-1, $legalNotice->fk_country) && !in_array(-3, $legalNotice->fk_country)) continue;
-				if (!in_array($object->thirdparty->country_id, $TCountryOutUE) && !in_array($object->thirdparty->country_id, $legalNotice->fk_country) && !in_array(-1, $legalNotice->fk_country)&& !in_array(-2, $legalNotice->fk_country)) continue;
+
+				// Si le pays n'est pas dans le tableau des pays de l'UE
+				if (!in_array($object->thirdparty->country_id, $TCountryUE) &&
+					// qu'il n'est pas selectionné dans la mention légale
+					!in_array($object->thirdparty->country_id, $legalNotice->fk_country) &&
+					// que le tableau parcouru n'est pas celui de TOUS LES PAYS
+					!in_array(-1, $legalNotice->fk_country) &&
+					// qu'il n'est pas le tableau des pays hors UE.
+					!in_array(-3, $legalNotice->fk_country))
+					// alors pas de traitement
+					continue;
+
+				// Si le pays n'est pas dans le tableau des pays hors de l'UE
+				if (!in_array($object->thirdparty->country_id, $TCountryOutUE) &&
+					// qu'il n'est pas selectionné dans la mention légale
+					!in_array($object->thirdparty->country_id, $legalNotice->fk_country) &&
+					// que le tableau parcouru n'est pas celui de TOUS LES PAYS
+					!in_array(-1, $legalNotice->fk_country) &&
+					// qu'il n'est pas le tableau des pays de l'UE.
+					!in_array(-2, $legalNotice->fk_country))
+					// alors pas de traitement
+					continue;
+
 				if (!in_array($object->thirdparty->typent_id, $legalNotice->fk_typent) && !in_array(-1, $legalNotice->fk_typent)) continue;
 				// 3 = Produit OU Service, donc on considère que c'est OK
                 // dans tous les cas et qu'il ne faut pas faire un "continue"
@@ -140,7 +161,7 @@ class ActionsLegalNotice
 	 * @return int      -1 on error
 	 * @return array    of country if ok
 	 */
-	public function search_country_EU(){
+	public function searchCountryEu(){
 
 		$sql = " SELECT rowid ";
 		$sql .= " FROM ". MAIN_DB_PREFIX ."c_country ";
@@ -168,7 +189,7 @@ class ActionsLegalNotice
 	 * @return int      -1 on error
 	 * @return array    of country if ok
 	 */
-	public function search_country_Out_EU(){
+	public function searchCountryOutEU(){
 
 		$sql = " SELECT rowid ";
 		$sql .= " FROM ". MAIN_DB_PREFIX ."c_country ";
