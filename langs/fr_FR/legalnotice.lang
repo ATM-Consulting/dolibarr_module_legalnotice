@@ -17,6 +17,8 @@ legalnotice_VATused=Assujetti à la TVA
 legalnotice_Notice=Mention
 legalnotice_Rang=Rang
 AllCountry=Tous les pays
+CountryUE=Pays de L'Union Européenne
+CountryOutUE= Pays hors de l'Union Européenne
 LegalNoticeDeleteConfirm=Êtes-vous sûr de vouloir supprimer cette mention ?
 
 LegalNoticeProductAndService=Produit ET Service
