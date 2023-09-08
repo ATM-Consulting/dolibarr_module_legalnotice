@@ -1,7 +1,7 @@
 
 
 ## NOT RELEASED
-- NEW : Ajout d'une option "Pays de l'UE" et "Pays hors UE" dans la page de configuation des mentions légales - *04/09/2023* -
+- NEW : Ajout d'une option "Pays de l'UE" et "Pays hors UE" dans la page de configuation des mentions légales - *04/09/2023* - 1.2.0
 
 ## 1.1.0
 - FIX :FIX : Bug from dolibarr v15, value -1 used in productType and typeTva incompatibility with ajax_combobox function - 27/07/2023 - 1.1.0
