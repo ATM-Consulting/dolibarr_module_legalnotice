@@ -94,10 +94,15 @@ class ActionsLegalNotice
 			$legal = new LegalNotice($this->db);
 			$TLegalNotice = $legal->fetchAll();
 
+			$TCountryUE = $this->search_country_EU();
+			$TCountryOutUE = $this->search_country_Out_EU();
+
 			foreach($TLegalNotice as &$legalNotice)
 			{
 				if ($object->thirdparty->tva_assuj !=
                     $legalNotice->is_assuj_tva && $legalNotice->is_assuj_tva != 2) continue;
+				if (!in_array($object->thirdparty->country_id, $TCountryUE) && !in_array($object->thirdparty->country_id, $legalNotice->fk_country) && !in_array(-1, $legalNotice->fk_country) && !in_array(-3, $legalNotice->fk_country)) continue;
+				if (!in_array($object->thirdparty->country_id, $TCountryOutUE) && !in_array($object->thirdparty->country_id, $legalNotice->fk_country) && !in_array(-1, $legalNotice->fk_country)) continue;
 				if (!in_array($object->thirdparty->country_id, $legalNotice->fk_country) && !in_array(-1, $legalNotice->fk_country)) continue;
 				if (!in_array($object->thirdparty->typent_id, $legalNotice->fk_typent) && !in_array(-1, $legalNotice->fk_typent)) continue;
 				// 3 = Produit OU Service, donc on considère que c'est OK
@@ -127,5 +132,61 @@ class ActionsLegalNotice
         }
 
 		return 0;
+	}
+
+	/**
+	 *
+	 * Give array of all country in EU
+	 *
+	 * @return int      -1 on error
+	 * @return array    of country if ok
+	 */
+	public function search_country_EU(){
+
+		$sql = " SELECT rowid ";
+		$sql .= " FROM ". MAIN_DB_PREFIX ."c_country ";
+		$sql .= " WHERE eec = 1";
+
+		$resql = $this->db->query($sql);
+
+		if ($resql) {
+			$resultArray = array();
+
+			while ($row = $this->db->fetch_object($resql)) {
+				$resultArray[] = $row->rowid;
+			}
+			return $resultArray;
+		} else {
+			return -1;
+		}
+
+	}
+
+	/**
+	 *
+	 * Give array of all country out in EU
+	 *
+	 * @return int      -1 on error
+	 * @return array    of country if ok
+	 */
+	public function search_country_Out_EU(){
+
+		$sql = " SELECT rowid ";
+		$sql .= " FROM ". MAIN_DB_PREFIX ."c_country ";
+		$sql .= " WHERE eec = 0";
+
+		$resql = $this->db->query($sql);
+
+		if ($resql) {
+			$resultArray = array();
+
+			while ($row = $this->db->fetch_object($resql)) {
+				$resultArray[] = $row->rowid;
+			}
+			return $resultArray;
+		} else {
+			return -1;
+		}
+
 	}
 }

@@ -23,6 +23,9 @@ LegalNoticeProductAndService=Produit ET Service
 LegalNoticeProductOrService=Produit OU Service
 LegalNoticeWhatEver=Peu importe
 
+CountryUE=Pays de L'Union Européenne
+CountryOutUE= Pays hors de l'Union Européenne
+
 LegalNotice_FieldCountryRequired=Erreur : champ "Pays" obligatoire
 LegalNotice_FieldProductTypeRequired=Erreur : champ "Type produit" obligatoire
 LegalNotice_FieldTypentRequired=Erreur : champ "Type de tiers" obligatoire
