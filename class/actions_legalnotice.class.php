@@ -74,7 +74,11 @@ class ActionsLegalNotice
 
 		$TContext = explode(':', $parameters['context']);
 
-		if (in_array('invoicecard', $TContext))
+		if (! in_array('pdfgeneration', $TContext)) {
+			return 0;
+		}
+
+		if ($object instanceof Facture)
 		{
 			if (!defined('INC_FROM_DOLIBARR')) define('INC_FROM_DOLIBARR', 1);
             dol_include_once('/legalnotice/config.php');
@@ -110,7 +114,7 @@ class ActionsLegalNotice
 				break;	// On s'arrête à la première mention légale qui réunit toutes les conditions
 			}
 		}
-		if(in_array('propalcard', $TContext) && !empty($conf->global->LEGALNOTICE_MULTI_NOTICE_PROPAL) && !empty($object->array_options['options_legalnotice_selected_notice'])) {
+		elseif($object instanceof Propal && !empty($conf->global->LEGALNOTICE_MULTI_NOTICE_PROPAL) && !empty($object->array_options['options_legalnotice_selected_notice'])) {
 		    $TLegalId = array($object->array_options['options_legalnotice_selected_notice']);
             if(strpos($object->array_options['options_legalnotice_selected_notice'],',') !== false) $TLegalId = explode(',',$object->array_options['options_legalnotice_selected_notice']);
 			if(empty($conf->global->PROPOSAL_FREE_TEXT)) $conf->global->PROPOSAL_FREE_TEXT = '';
