@@ -74,9 +74,6 @@ class ActionsLegalNotice
 
 		$TContext = explode(':', $parameters['context']);
 
-		if (! in_array('pdfgeneration', $TContext)) {
-			return 0;
-		}
 
 		if ($object instanceof Facture)
 		{
