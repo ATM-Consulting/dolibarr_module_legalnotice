@@ -70,14 +70,14 @@ class ActionsLegalNotice
 		global $conf;
 
 
-        dol_include_once('/legalnotice/class/legalnotice.class.php');
+		dol_include_once('/legalnotice/class/legalnotice.class.php');
 
 		$TContext = explode(':', $parameters['context']);
 
-		if (in_array('invoicecard', $TContext))
+		if ($object->element === 'facture')
 		{
 			if (!defined('INC_FROM_DOLIBARR')) define('INC_FROM_DOLIBARR', 1);
-            dol_include_once('/legalnotice/config.php');
+			dol_include_once('/legalnotice/config.php');
 			if(empty($object->thidparty->id)) $object->fetch_thirdparty();
 			if(empty($object->lines)) $object->fetch_lines();
 
@@ -85,8 +85,8 @@ class ActionsLegalNotice
 			// On parcours toutes les lignes de la facture pour connaitre les types de produit présent
 			foreach($object->lines as &$line) $TType[$line->product_type] = true;
 
-            //  Je change la valeur de -1 à 2 car les valeurs ont été
-            // modifiées dans le tableau des valeurs des types de produits
+			//  Je change la valeur de -1 à 2 car les valeurs ont été
+			// modifiées dans le tableau des valeurs des types de produits
 			if (count($TType) == 2) $product_type = 2;
 			else if(isset($TType[0])) $product_type = 0;
 			else $product_type = 1;
@@ -135,7 +135,7 @@ class ActionsLegalNotice
 				break;	// On s'arrête à la première mention légale qui réunit toutes les conditions
 			}
 		}
-		if(in_array('propalcard', $TContext) && !empty($conf->global->LEGALNOTICE_MULTI_NOTICE_PROPAL) && !empty($object->array_options['options_legalnotice_selected_notice'])) {
+		elseif($object->element === 'propal' && !empty($conf->global->LEGALNOTICE_MULTI_NOTICE_PROPAL) && !empty($object->array_options['options_legalnotice_selected_notice'])) {
 		    $TLegalId = array($object->array_options['options_legalnotice_selected_notice']);
             if(strpos($object->array_options['options_legalnotice_selected_notice'],',') !== false) $TLegalId = explode(',',$object->array_options['options_legalnotice_selected_notice']);
 			if(empty($conf->global->PROPOSAL_FREE_TEXT)) $conf->global->PROPOSAL_FREE_TEXT = '';
