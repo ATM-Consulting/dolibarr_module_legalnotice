@@ -190,6 +190,8 @@ print '</table>';
 print '<br />';
 */
 $TCountry = array('-1' => $langs->trans('AllCountry'));
+$TCountry[-2] = $langs->trans('CountryUE');
+$TCountry[-3] = $langs->trans('CountryOutUE');
 
 $sql = 'SELECT rowid, code as code_iso, label';
 $sql.= ' FROM '.MAIN_DB_PREFIX.'c_country';
