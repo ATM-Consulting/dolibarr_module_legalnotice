@@ -132,7 +132,6 @@ class ActionsLegalNotice
 
 				if(! empty($conf->global->INVOICE_FREE_TEXT)) $conf->global->INVOICE_FREE_TEXT .= "\n<br />";
 				$conf->global->INVOICE_FREE_TEXT .= $legalNotice->mention;
-				break;	// On s'arrête à la première mention légale qui réunit toutes les conditions
 			}
 		}
 		elseif($object->element === 'propal' && !empty($conf->global->LEGALNOTICE_MULTI_NOTICE_PROPAL) && !empty($object->array_options['options_legalnotice_selected_notice'])) {
