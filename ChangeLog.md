@@ -1,6 +1,10 @@
 ## NOT RELEASED
 
 
+## 1.3
+
+- NEW : compatibilité dolibarr v19 & PHP8.2 - *28/11/2023* - 1.3.0
+
 ## 1.2
 
 - NEW : Ajout d'une option "Pays de l'UE" et "Pays hors UE" dans la page de configuation des mentions légales - *04/09/2023* - 1.2.0
