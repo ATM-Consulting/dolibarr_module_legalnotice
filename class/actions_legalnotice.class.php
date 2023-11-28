@@ -26,7 +26,7 @@
 /**
  * Class ActionsLegalNotice
  */
-class ActionsLegalNotice
+class ActionsLegalNotice extends CommonHookActions
 {
 	/**
 	 * @var array Hook results. Propagated to $hookmanager->resArray for later reuse
