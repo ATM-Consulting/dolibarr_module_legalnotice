@@ -88,17 +88,17 @@ function getFormConfirmLegalNotice(&$PDOdb, &$form, &$object, $action)
 
     $formconfirm = '';
 
-    if ($action == 'validate' && !empty($user->rights->legalnotice->write))
+    if ($action == 'validate' && $user->hasRight('legalnotice', 'write'))
     {
         $text = $langs->trans('ConfirmValidateLegalNotice', $object->ref);
         $formconfirm = $form->formconfirm($_SERVER['PHP_SELF'] . '?id=' . $object->id, $langs->trans('ValidateLegalNotice'), $text, 'confirm_validate', '', 0, 1);
     }
-    elseif ($action == 'delete' && !empty($user->rights->legalnotice->write))
+    elseif ($action == 'delete' && $user->hasRight('legalnotice', 'write'))
     {
         $text = $langs->trans('ConfirmDeleteLegalNotice');
         $formconfirm = $form->formconfirm($_SERVER['PHP_SELF'] . '?id=' . $object->id, $langs->trans('DeleteLegalNotice'), $text, 'confirm_delete', '', 0, 1);
     }
-    elseif ($action == 'clone' && !empty($user->rights->legalnotice->write))
+    elseif ($action == 'clone' && $user->hasRight('legalnotice', 'write'))
     {
         $text = $langs->trans('ConfirmCloneLegalNotice', $object->ref);
         $formconfirm = $form->formconfirm($_SERVER['PHP_SELF'] . '?id=' . $object->id, $langs->trans('CloneLegalNotice'), $text, 'confirm_clone', '', 0, 1);

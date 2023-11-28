@@ -380,7 +380,7 @@ class modLegalNotice extends DolibarrModules
 	 */
 	public function needUpdate($targetVersion){
 		global $conf;
-		if (empty($conf->global->MAIN_MODULE_LEGALNOTICE)) {
+		if (!getDolGlobalString('MAIN_MODULE_LEGALNOTICE')) {
 			return true;
 		}
 

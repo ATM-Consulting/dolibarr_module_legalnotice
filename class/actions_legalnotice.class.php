@@ -130,20 +130,20 @@ class ActionsLegalNotice
 				if ($product_type != $legalNotice->product_type &&
                     $legalNotice->product_type != 3) continue;
 
-				if(! empty($conf->global->INVOICE_FREE_TEXT)) $conf->global->INVOICE_FREE_TEXT .= "\n<br />";
+				if(getDolGlobalString('INVOICE_FREE_TEXT')) $conf->global->INVOICE_FREE_TEXT .= "\n<br />";
 				$conf->global->INVOICE_FREE_TEXT .= $legalNotice->mention;
 				break;	// On s'arrête à la première mention légale qui réunit toutes les conditions
 			}
 		}
-		elseif($object->element === 'propal' && !empty($conf->global->LEGALNOTICE_MULTI_NOTICE_PROPAL) && !empty($object->array_options['options_legalnotice_selected_notice'])) {
+		elseif($object->element === 'propal' && getDolGlobalString('LEGALNOTICE_MULTI_NOTICE_PROPAL') && !empty($object->array_options['options_legalnotice_selected_notice'])) {
 		    $TLegalId = array($object->array_options['options_legalnotice_selected_notice']);
             if(strpos($object->array_options['options_legalnotice_selected_notice'],',') !== false) $TLegalId = explode(',',$object->array_options['options_legalnotice_selected_notice']);
-			if(empty($conf->global->PROPOSAL_FREE_TEXT)) $conf->global->PROPOSAL_FREE_TEXT = '';
+			if(!getDolGlobalString('PROPOSAL_FREE_TEXT')) $conf->global->PROPOSAL_FREE_TEXT = '';
             if(!empty($TLegalId)) {
                 foreach($TLegalId as $fk_notice) {
                     $legal = new LegalNotice($this->db);
                     $legal->fetch($fk_notice);
-                    if(! empty($conf->global->PROPOSAL_FREE_TEXT))$conf->global->PROPOSAL_FREE_TEXT .= "\n<br />";
+                    if(getDolGlobalString('PROPOSAL_FREE_TEXT'))$conf->global->PROPOSAL_FREE_TEXT .= "\n<br />";
                     $conf->global->PROPOSAL_FREE_TEXT .= $legal->mention;
                 }
             }
