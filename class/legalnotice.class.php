@@ -5,7 +5,7 @@ if (!class_exists('TObjetStd'))
 	/**
 	 * Needed if $form->showLinkedObjectBlock() is call
 	 */
-	define('INC_FROM_DOLIBARR', true);
+    if (!defined('INC_FROM_DOLIBARR')) define('INC_FROM_DOLIBARR', true);
 	require_once dirname(__FILE__).'/../config.php';
 }
 

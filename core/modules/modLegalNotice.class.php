@@ -334,7 +334,7 @@ class modLegalNotice extends DolibarrModules
 	    global $db;
 		$sql = array();
 
-		define('INC_FROM_DOLIBARR',true);
+        if (!defined('INC_FROM_DOLIBARR')) define('INC_FROM_DOLIBARR',true);
 
 		dol_include_once('/legalnotice/config.php');
 		dol_include_once('/legalnotice/script/create-maj-base.php');
