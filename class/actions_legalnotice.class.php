@@ -26,11 +26,9 @@
 /**
  * Class ActionsLegalNotice
  */
-$commonhookactionsclassfileDolibarr     = DOL_DOCUMENT_ROOT.'/core/class/commonhookactions.class.php';
-$commonhookactionsclassfileBackport     = __DIR__.'/../backport/v19/core/class/commonhookactions.class.php';
-$commonhookactionsclassfileToUse        = (file_exists($commonhookactionsclassfileDolibarr)) ? $commonhookactionsclassfileDolibarr : $commonhookactionsclassfileBackport;
-require_once $commonhookactionsclassfileToUse;
-class ActionsLegalNotice extends CommonHookActions
+require_once __DIR__ . '/../backport/v19/core/class/commonhookactions.class.php';
+
+class ActionsLegalNotice extends legalnotice\RetroCompatCommonHookActions
 {
 	/**
 	 * @var array Hook results. Propagated to $hookmanager->resArray for later reuse
