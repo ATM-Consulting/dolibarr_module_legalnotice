@@ -1,6 +1,11 @@
 ## NOT RELEASED
 
 
+## 1.3
+
+- NEW :   Changed Dolibarr compatibility range to 12 min - 19 max 	 - *28/11/2023* - 1.3.0 
+ 	  Changed PHP compatibility range to 7.0 min - 8.2 max		 - *28/11/2023* - 1.3.0
+
 ## 1.2
 
 - NEW : Ajout d'une option "Pays de l'UE" et "Pays hors UE" dans la page de configuation des mentions légales - *04/09/2023* - 1.2.0
