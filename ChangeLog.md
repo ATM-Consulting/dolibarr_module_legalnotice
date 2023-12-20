@@ -1,6 +1,15 @@
 ## NOT RELEASED
 
 
+
+- NEW : FormSetup migration - 1.6.0 - *20/12/2023*
+- NEW : Add TechATM for about page - *20/12/2023* - 1.5.0
+- NEW : Default behavior change - 1.4.0 - *20/12/2023*  
+	Cumuler les mentions plutôt que de ne garder que la première  
+	Add option to disable
+- NEW :   Changed Dolibarr compatibility range to 12 min - 19 max 	 - *28/11/2023* - 1.3.0 
+ 	  Changed PHP compatibility range to 7.0 min - 8.2 max		 - *28/11/2023* - 1.3.0
+
 ## 1.3
 
 - NEW : Default behavior change - 1.2.1 - *25/10/2023*  

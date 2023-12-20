@@ -8,6 +8,7 @@ LegalNoticeAbout = A propos du module Mentions légales
 
 LegalNotice=Mention légale
 LegalNoticePDF=Mention légale :
+LegalNoticeSetupPage = Page de configuration du module mentions légales
 
 # ADMIN
 legalnotice_Country=Pays
