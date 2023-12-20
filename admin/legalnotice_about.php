@@ -61,15 +61,14 @@ dol_fiche_head(
     'legalnotice@legalnotice'
 );
 
-// About page goes here
-print '<div style="float: left;"><img src="../img/Dolibarr_Preferred_Partner_logo.png" /></div>';
-print '<div>'.$langs->trans('ATMAbout').'</div>';
 
-dol_fiche_end();
+require_once __DIR__ . '/../class/techatm.class.php';
+$techATM = new \legalnotice\TechATM($db);
 
-print '<br><center>';
-print '<a href="http://www.atm-consulting.fr" target="_blank"><img src="../img/ATM_logo.jpg" /></a>';
-print '</center>';
+require_once __DIR__ . '/../core/modules/modLegalNotice.class.php';
+$moduleDescriptor = new modLegalNotice($db);
+
+print $techATM->getAboutPage($moduleDescriptor);
 
 llxFooter();
 
