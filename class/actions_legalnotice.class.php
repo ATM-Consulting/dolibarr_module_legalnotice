@@ -134,6 +134,10 @@ class ActionsLegalNotice extends legalnotice\RetroCompatCommonHookActions
 
 				if(getDolGlobalString('INVOICE_FREE_TEXT')) $conf->global->INVOICE_FREE_TEXT .= "\n<br />";
 				$conf->global->INVOICE_FREE_TEXT .= $legalNotice->mention;
+
+				if(getDolGlobalInt('LEGALNOTICE_DO_NOT_CONCAT')) {
+					break; // On s'arrête à la première mention légale qui réunit toutes les conditions
+				}
 			}
 		}
 		elseif($object->element === 'propal' && getDolGlobalString('LEGALNOTICE_MULTI_NOTICE_PROPAL') && !empty($object->array_options['options_legalnotice_selected_notice'])) {
@@ -146,6 +150,10 @@ class ActionsLegalNotice extends legalnotice\RetroCompatCommonHookActions
                     $legal->fetch($fk_notice);
                     if(getDolGlobalString('PROPOSAL_FREE_TEXT'))$conf->global->PROPOSAL_FREE_TEXT .= "\n<br />";
                     $conf->global->PROPOSAL_FREE_TEXT .= $legal->mention;
+
+					if(getDolGlobalInt('LEGALNOTICE_DO_NOT_CONCAT')) {
+						break; // On s'arrête à la première mention légale qui réunit toutes les conditions
+					}
                 }
             }
 

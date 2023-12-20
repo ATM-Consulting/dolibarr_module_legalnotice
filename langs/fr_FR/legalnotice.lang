@@ -32,3 +32,4 @@ LegalNotice_FieldTypentRequired=Erreur : champ "Type de tiers" obligatoire
 LegalNotice_FieldVATUsedRequired=Erreur : champ "Assujetti TVA" obligatoire
 LegalNotice_FieldMentionRequired=Erreur : champ "Mention" obligatoire
 ManageMultiNoticePropal = Permet de sélectionner une ou plusieurs mentions sur une proposition commerciale
+LEGALNOTICE_DO_NOT_CONCAT = Ne pas concaténer les mentions légales.

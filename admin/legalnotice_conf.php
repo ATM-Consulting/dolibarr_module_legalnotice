@@ -198,6 +198,8 @@ $item->saveCallBack = function(FormSetupItem $item){
 };
 
 
+// Ne pas concaténer les mentions légales.
+$formSetup->newItem('LEGALNOTICE_DO_NOT_CONCAT')->setAsYesNo();
 
 
 
