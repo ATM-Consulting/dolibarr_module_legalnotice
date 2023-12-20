@@ -272,7 +272,7 @@ print '<td>'.$form->selectarray('product_type', $TProductType, $object->product_
 print '<td>'.$form->multiselectarray('fk_typent', $TTypent, (!empty($object->fk_typent) ? $object->fk_typent : array(-1)), 0, 0, 'minwidth200').'</td>';
 print '<td>'.$form->selectarray('is_assuj_tva', $TVATused, $object->is_assuj_tva).'</td>';
 print '<td>';
-if (empty($conf->global->PDF_ALLOW_HTML_FOR_FREE_TEXT))
+if (!getDolGlobalString('PDF_ALLOW_HTML_FOR_FREE_TEXT'))
 {
     print '<textarea name="mention" class="flat" cols="120">'.$object->mention.'</textarea>';
 }
