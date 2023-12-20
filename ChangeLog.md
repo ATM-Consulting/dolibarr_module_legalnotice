@@ -2,6 +2,8 @@
 
 
 
+## Release 1.6
+
 - NEW : FormSetup migration - 1.6.0 - *20/12/2023*
 - NEW : Add TechATM for about page - *20/12/2023* - 1.5.0
 - NEW : Default behavior change - 1.4.0 - *20/12/2023*  
