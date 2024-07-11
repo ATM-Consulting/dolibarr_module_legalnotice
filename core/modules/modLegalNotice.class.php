@@ -61,7 +61,7 @@ class modLegalNotice extends DolibarrModules
 		// Module description, used if translation string 'ModuleXXXDesc' not found (where XXX is value of numeric property 'numero' of module)
 		$this->description = "Description of module LegalNotice";
 		// Possible values for version are: 'development', 'experimental', 'dolibarr' or version
-		$this->version = '1.6.0';
+		$this->version = '1.7.0';
 		// Key used in llx_const table to save module status enabled/disabled (where MYMODULE is value of property name of module in uppercase)
 		$this->const_name = 'MAIN_MODULE_'.strtoupper($this->name);
 		// Where to store the module in setup page (0=common,1=interface,2=others,3=very specific)
@@ -109,7 +109,7 @@ class modLegalNotice extends DolibarrModules
 		$this->requiredby = array();	// List of modules id to disable if this one is disabled
 		$this->conflictwith = array();	// List of modules id this module is in conflict with
 		$this->phpmin = array(7,0);					// Minimum version of PHP required by module
-		$this->need_dolibarr_version = array(15,0);	// Minimum version of Dolibarr required by module
+		$this->need_dolibarr_version = array(16,0);	// Minimum version of Dolibarr required by module
 		$this->langfiles = array("legalnotice@legalnotice");
 
 		// Url to the file with your last numberversion of this module
@@ -150,14 +150,14 @@ class modLegalNotice extends DolibarrModules
         $this->tabs = array();
 
         // Dictionaries
-	    if (! isset($conf->legalnotice->enabled))
+	    if (!isModEnabled('legalnotice'))
         {
         	$conf->legalnotice=new stdClass();
         	$conf->legalnotice->enabled=0;
         }
 		$this->dictionaries=array();
         /* Example:
-        if (! isset($conf->legalnotice->enabled)) $conf->legalnotice->enabled=0;	// This is to avoid warnings
+        if (!isModEnabled('legalnotice')) $conf->legalnotice->enabled=0;	// This is to avoid warnings
         $this->dictionaries=array(
             'langs'=>'legalnotice@legalnotice',
             'tabname'=>array(MAIN_DB_PREFIX."table1",MAIN_DB_PREFIX."table2",MAIN_DB_PREFIX."table3"),		// List of tables we want to see into dictonnary editor
@@ -168,7 +168,7 @@ class modLegalNotice extends DolibarrModules
             'tabfieldvalue'=>array("code,label","code,label","code,label"),																				// List of fields (list of fields to edit a record)
             'tabfieldinsert'=>array("code,label","code,label","code,label"),																			// List of fields (list of fields for insert)
             'tabrowid'=>array("rowid","rowid","rowid"),																									// Name of columns with primary key (try to always name it 'rowid')
-            'tabcond'=>array($conf->legalnotice->enabled,$conf->legalnotice->enabled,$conf->legalnotice->enabled)												// Condition to show each dictionary
+            'tabcond'=>array(isModEnabled('legalnotice'),isModEnabled('legalnotice'),isModEnabled('legalnotice'))												// Condition to show each dictionary
         );
         */
 
@@ -221,7 +221,7 @@ class modLegalNotice extends DolibarrModules
 		//							'url'=>'/legalnotice/pagetop.php',
 		//							'langs'=>'legalnotice@legalnotice',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 		//							'position'=>100,
-		//							'enabled'=>'$conf->legalnotice->enabled',	// Define condition to show or hide menu entry. Use '$conf->legalnotice->enabled' if entry must be visible if module is enabled.
+		//							'enabled'=>"isModEnabled('legalnotice')",	// Define condition to show or hide menu entry. Use "isModEnabled('legalnotice')" if entry must be visible if module is enabled.
 		//							'perms'=>'1',			                // Use 'perms'=>'$user->rights->legalnotice->level1->level2' if you want your menu with a permission rules
 		//							'target'=>'',
 		//							'user'=>2);				                // 0=Menu for internal users, 1=external users, 2=both
@@ -236,7 +236,7 @@ class modLegalNotice extends DolibarrModules
 		//							'url'=>'/legalnotice/pagelevel2.php',
 		//							'langs'=>'legalnotice@legalnotice',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 		//							'position'=>100,
-		//							'enabled'=>'$conf->legalnotice->enabled',  // Define condition to show or hide menu entry. Use '$conf->legalnotice->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
+		//							'enabled'=>"isModEnabled('legalnotice')",  // Define condition to show or hide menu entry. Use "isModEnabled('legalnotice')" if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
 		//							'perms'=>'1',			                // Use 'perms'=>'$user->rights->legalnotice->level1->level2' if you want your menu with a permission rules
 		//							'target'=>'',
 		//							'user'=>2);				                // 0=Menu for internal users, 1=external users, 2=both
@@ -252,7 +252,7 @@ class modLegalNotice extends DolibarrModules
 			'url'=>'/legalnotice/list.php',
 			'langs'=>'legalnotice@legalnotice',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>100+$r,
-			'enabled'=>'$conf->legalnotice->enabled',	// Define condition to show or hide menu entry. Use '$conf->missionorder->enabled' if entry must be visible if module is enabled.
+			'enabled'=>"isModEnabled('legalnotice')",	// Define condition to show or hide menu entry. Use '$conf->missionorder->enabled' if entry must be visible if module is enabled.
 			'perms'=>'$user->rights->legalnotice->read',			                // Use 'perms'=>'$user->rights->missionorder->level1->level2' if you want your menu with a permission rules
 			'target'=>'',
 			'user'=>2
@@ -268,7 +268,7 @@ class modLegalNotice extends DolibarrModules
 			'url'=>'/legalnotice/list.php',
 			'langs'=>'legalnotice@legalnotice',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>100+$r,
-			'enabled'=>'$conf->legalnotice->enabled',	// Define condition to show or hide menu entry. Use '$conf->missionorder->enabled' if entry must be visible if module is enabled.
+			'enabled'=>"isModEnabled('legalnotice')",	// Define condition to show or hide menu entry. Use '$conf->missionorder->enabled' if entry must be visible if module is enabled.
 			'perms'=>'$user->rights->legalnotice->read',			                // Use 'perms'=>'$user->rights->missionorder->level1->level2' if you want your menu with a permission rules
 			'target'=>'',
 			'user'=>2
@@ -284,7 +284,7 @@ class modLegalNotice extends DolibarrModules
 			'url'=>'/legalnotice/card.php?action=create',
 			'langs'=>'legalnotice@legalnotice',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>100+$r,
-			'enabled'=> '$conf->legalnotice->enabled',  // Define condition to show or hide menu entry. Use '$conf->missionorder->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
+			'enabled'=> "isModEnabled('legalnotice')",  // Define condition to show or hide menu entry. Use '$conf->missionorder->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
 			'perms'=> '$user->rights->legalnotice->write',			                // Use 'perms'=>'$user->rights->missionorder->level1->level2' if you want your menu with a permission rules
 			'target'=>'',
 			'user'=>2
@@ -301,7 +301,7 @@ class modLegalNotice extends DolibarrModules
 			'url'=>'/legalnotice/list.php',
 			'langs'=>'legalnotice@legalnotice',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
 			'position'=>100+$r,
-			'enabled'=> '$conf->legalnotice->enabled',  // Define condition to show or hide menu entry. Use '$conf->missionorder->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
+			'enabled'=> "isModEnabled('legalnotice')",  // Define condition to show or hide menu entry. Use '$conf->missionorder->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
 			'perms'=> '$user->rights->legalnotice->write',			                // Use 'perms'=>'$user->rights->missionorder->level1->level2' if you want your menu with a permission rules
 			'target'=>'',
 			'user'=>2
