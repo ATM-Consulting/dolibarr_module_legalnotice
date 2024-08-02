@@ -1,6 +1,13 @@
 ## NOT RELEASED
 
+## Unreleased
 
+
+
+## Release 1.7
+
+- FIX: Compat v20
+  Changed Dolibarr compatibility range to 16 min - 20 max  - *24/07/2024* - 1.7.0
 
 ## Release 1.6
 
