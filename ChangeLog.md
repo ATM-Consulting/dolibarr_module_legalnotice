@@ -5,6 +5,7 @@
 
 
 ## Release 1.7
+- FIX: wrong test for invoice free text - *21/03/2025* - 1.7.2
 - FIX: Compat v21 - *10/12/2024* - 1.7.1
 - FIX: Compat v20
   Changed Dolibarr compatibility range to 16 min - 20 max  - *24/07/2024* - 1.7.0
