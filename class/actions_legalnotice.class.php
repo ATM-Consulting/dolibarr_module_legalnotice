@@ -98,7 +98,6 @@ class ActionsLegalNotice extends legalnotice\RetroCompatCommonHookActions
 
 			$TCountryUE = $this->searchCountryEu();
 			$TCountryOutUE = $this->searchCountryOutEU();
-
 			foreach($TLegalNotice as &$legalNotice)
 			{
 				if ($object->thirdparty->tva_assuj !=
@@ -133,7 +132,8 @@ class ActionsLegalNotice extends legalnotice\RetroCompatCommonHookActions
                     $legalNotice->product_type != 3) continue;
 
 				if(getDolGlobalString('INVOICE_FREE_TEXT')) $conf->global->INVOICE_FREE_TEXT .= "\n<br />";
-				if(getDolGlobalString('INVOICE_FREE_TEXT')) $conf->global->INVOICE_FREE_TEXT .= $legalNotice->mention;
+				if(!isset($conf->global->INVOICE_FREE_TEXT)) $conf->global->INVOICE_FREE_TEXT = '';
+				$conf->global->INVOICE_FREE_TEXT .= $legalNotice->mention;
 
 				if(getDolGlobalInt('LEGALNOTICE_DO_NOT_CONCAT')) {
 					break; // On s'arrête à la première mention légale qui réunit toutes les conditions
