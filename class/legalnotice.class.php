@@ -15,6 +15,14 @@ class LegalNotice extends SeedObject
 	public $table_element = 'legalnotice';
 
 	public $element = 'legalnotice';
+	public $mention = '';
+	public $fk_country = array();
+	public $product_type = 0;
+	public $fk_typent;
+	public $is_assuj_tva;
+	public $rang;
+	public $entity;
+	public $errors = array();
 
 	public function __construct($db)
 	{
