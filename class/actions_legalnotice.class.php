@@ -98,6 +98,11 @@ class ActionsLegalNotice extends legalnotice\RetroCompatCommonHookActions
 
 			$TCountryUE = $this->searchCountryEu();
 			$TCountryOutUE = $this->searchCountryOutEU();
+
+			if(!isset($conf->global->INVOICE_FREE_TEXT)) {
+				$conf->global->INVOICE_FREE_TEXT = '';
+			}
+
 			foreach($TLegalNotice as &$legalNotice)
 			{
 				if ($object->thirdparty->tva_assuj !=
@@ -131,9 +136,13 @@ class ActionsLegalNotice extends legalnotice\RetroCompatCommonHookActions
 				if ($product_type != $legalNotice->product_type &&
                     $legalNotice->product_type != 3) continue;
 
-				if(getDolGlobalString('INVOICE_FREE_TEXT')) $conf->global->INVOICE_FREE_TEXT .= "\n<br />";
-				if(!isset($conf->global->INVOICE_FREE_TEXT)) $conf->global->INVOICE_FREE_TEXT = '';
-				$conf->global->INVOICE_FREE_TEXT .= $legalNotice->mention;
+
+				if (strpos(getDolGlobalString('INVOICE_FREE_TEXT'), $legalNotice->mention) === false) {
+					if (getDolGlobalString('INVOICE_FREE_TEXT')) {
+						$conf->global->INVOICE_FREE_TEXT .= "\n<br />";
+					}
+					$conf->global->INVOICE_FREE_TEXT .= $legalNotice->mention;
+				}
 
 				if(getDolGlobalInt('LEGALNOTICE_DO_NOT_CONCAT')) {
 					break; // On s'arrête à la première mention légale qui réunit toutes les conditions
@@ -143,13 +152,20 @@ class ActionsLegalNotice extends legalnotice\RetroCompatCommonHookActions
 		elseif($object->element === 'propal' && getDolGlobalString('LEGALNOTICE_MULTI_NOTICE_PROPAL') && !empty($object->array_options['options_legalnotice_selected_notice'])) {
 		    $TLegalId = array($object->array_options['options_legalnotice_selected_notice']);
             if(strpos($object->array_options['options_legalnotice_selected_notice'],',') !== false) $TLegalId = explode(',',$object->array_options['options_legalnotice_selected_notice']);
-			if(!getDolGlobalString('PROPOSAL_FREE_TEXT')) $conf->global->PROPOSAL_FREE_TEXT = '';
+			if (!isset($conf->global->PROPOSAL_FREE_TEXT)) {
+				$conf->global->PROPOSAL_FREE_TEXT = '';
+			}
             if(!empty($TLegalId)) {
                 foreach($TLegalId as $fk_notice) {
                     $legal = new LegalNotice($this->db);
                     $legal->fetch($fk_notice);
-                    if(getDolGlobalString('PROPOSAL_FREE_TEXT'))$conf->global->PROPOSAL_FREE_TEXT .= "\n<br />";
-                    $conf->global->PROPOSAL_FREE_TEXT .= $legal->mention;
+
+					if (strpos(getDolGlobalString('PROPOSAL_FREE_TEXT'), $legal->mention) === false) {
+						if (getDolGlobalString('PROPOSAL_FREE_TEXT')) {
+							$conf->global->PROPOSAL_FREE_TEXT .= "\n<br />";
+						}
+						$conf->global->PROPOSAL_FREE_TEXT .= $legal->mention;
+					}
 
 					if(getDolGlobalInt('LEGALNOTICE_DO_NOT_CONCAT')) {
 						break; // On s'arrête à la première mention légale qui réunit toutes les conditions
