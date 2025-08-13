@@ -1,8 +1,11 @@
 <?php
 // Dolibarr environment
-$res = @include("../../main.inc.php"); // From htdocs directory
-if (! $res) {
-    $res = @include("../../../main.inc.php"); // From "custom" directory
+if (!defined('INC_FROM_DOLIBARR')) {
+	define('INC_FROM_DOLIBARR', true);
+	$res = @include("../../main.inc.php");
+	if (! $res) {
+		$res = @include("../../../main.inc.php");
+	}
 }
 
 require_once DOL_DOCUMENT_ROOT . "/core/lib/admin.lib.php";

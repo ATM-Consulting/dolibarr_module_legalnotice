@@ -5,6 +5,7 @@
 
 
 ## Release 1.7
+- FIX: Conditionally load the main configuration file to prevent fatal errors. *13/08/2025* - 1.7.4
 - FIX: Compat v22 - *03/02/2025* - 1.7.3
 - FIX: wrong test for invoice free text - *21/03/2025* - 1.7.2
 - FIX: Compat v21 - *10/12/2024* - 1.7.1
