@@ -1,7 +1,6 @@
 <?php
 // Dolibarr environment
 if (!defined('INC_FROM_DOLIBARR')) {
-	define('INC_FROM_DOLIBARR', true);
 	$res = @include("../../main.inc.php");
 	if (! $res) {
 		$res = @include("../../../main.inc.php");
