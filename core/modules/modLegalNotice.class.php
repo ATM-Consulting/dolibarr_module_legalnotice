@@ -38,11 +38,11 @@ class modLegalNotice extends DolibarrModules
 	 *
 	 *   @param      DoliDB		$db      Database handler
 	 */
-	function __construct($db)
+	public function __construct($db)
 	{
-        global $langs,$conf;
+		global $langs,$conf;
 
-        $this->db = $db;
+		$this->db = $db;
 
 		$this->editor_name = 'ATM Consulting';
 		$this->editor_url = 'https://www.atm-consulting.fr';
@@ -57,11 +57,11 @@ class modLegalNotice extends DolibarrModules
 		// It is used to group modules in module setup page
 		$this->family = "ATM Consulting";
 		// Module label (no space allowed), used if translation string 'ModuleXXXName' not found (where XXX is value of numeric property 'numero' of module)
-		$this->name = preg_replace('/^mod/i','',get_class($this));
+		$this->name = preg_replace('/^mod/i', '', get_class($this));
 		// Module description, used if translation string 'ModuleXXXDesc' not found (where XXX is value of numeric property 'numero' of module)
 		$this->description = "Description of module LegalNotice";
 		// Possible values for version are: 'development', 'experimental', 'dolibarr' or version
-		$this->version = '1.7.3';
+		$this->version = '1.7.4';
 		// Key used in llx_const table to save module status enabled/disabled (where MYMODULE is value of property name of module in uppercase)
 		$this->const_name = 'MAIN_MODULE_'.strtoupper($this->name);
 		// Where to store the module in setup page (0=common,1=interface,2=others,3=very specific)
@@ -76,9 +76,9 @@ class modLegalNotice extends DolibarrModules
 		// for specific path of parts (eg: /legalnotice/core/modules/barcode)
 		// for specific css file (eg: /legalnotice/css/legalnotice.css.php)
 		$this->module_parts = array(
-            'hooks' => array(
-                'pdfgeneration',
-            )
+			'hooks' => array(
+				'pdfgeneration',
+			)
 		);
 
 		// Data directories to create when module is enabled.
@@ -109,9 +109,9 @@ class modLegalNotice extends DolibarrModules
 		$this->const = array();
 
 		// Array to add new pages in new tabs
-		// Example: $this->tabs = array('objecttype:+tabname1:Title1:legalnotice@legalnotice:$user->rights->legalnotice->read:/legalnotice/mynewtab1.php?id=__ID__',  	// To add a new tab identified by code tabname1
-        //                              'objecttype:+tabname2:Title2:legalnotice@legalnotice:$user->rights->othermodule->read:/legalnotice/mynewtab2.php?id=__ID__',  	// To add another new tab identified by code tabname2
-        //                              'objecttype:-tabname:NU:conditiontoremove');                                                     						// To remove an existing tab identified by code tabname
+		// Example: $this->tabs = array('objecttype:+tabname1:Title1:legalnotice@legalnotice:$user->hasRight('legalnotice', 'read'):/legalnotice/mynewtab1.php?id=__ID__',  	// To add a new tab identified by code tabname1
+		//                              'objecttype:+tabname2:Title2:legalnotice@legalnotice:$user->hasRight('othermodule', 'read'):/legalnotice/mynewtab2.php?id=__ID__',  	// To add another new tab identified by code tabname2
+		//                              'objecttype:-tabname:NU:conditiontoremove');                                                     						// To remove an existing tab identified by code tabname
 		// where objecttype can be
 		// 'categories_x'	  to add a tab in category view (replace 'x' by type of category (0=product, 1=supplier, 2=customer, 3=member)
 		// 'contact'          to add a tab in contact view
@@ -132,19 +132,18 @@ class modLegalNotice extends DolibarrModules
 		// 'stock'            to add a tab in stock view
 		// 'thirdparty'       to add a tab in third party view
 		// 'user'             to add a tab in user view
-        $this->tabs = array();
+		$this->tabs = array();
 
-        // Dictionaries
-	    if (!isModEnabled('legalnotice'))
-        {
-        	$conf->legalnotice=new stdClass();
-        	$conf->legalnotice->enabled=0;
-        }
+		// Dictionaries
+		if (!isModEnabled('legalnotice')) {
+			$conf->legalnotice=new stdClass();
+			$conf->legalnotice->enabled=0;
+		}
 		$this->dictionaries=array();
 
-        // Boxes
+		// Boxes
 		// Add here list of php file(s) stored in core/boxes that contains class to show a box.
-        $this->boxes = array();			// List of boxes
+		$this->boxes = array();			// List of boxes
 		// Example:
 		//$this->boxes=array(array(0=>array('file'=>'myboxa.php','note'=>'','enabledbydefaulton'=>'Home'),1=>array('file'=>'myboxb.php','note'=>''),2=>array('file'=>'myboxc.php','note'=>'')););
 
@@ -162,7 +161,6 @@ class modLegalNotice extends DolibarrModules
 
 		// Exports
 		$r=1;
-
 	}
 
 	/**
@@ -170,15 +168,15 @@ class modLegalNotice extends DolibarrModules
 	 *		The init function add constants, boxes, permissions and menus (defined in constructor) into Dolibarr database.
 	 *		It also creates data directories
 	 *
-     *      @param      string	$options    Options when enabling module ('', 'noboxes')
+	 *      @param      string	$options    Options when enabling module ('', 'noboxes')
 	 *      @return     int             	1 if OK, 0 if KO
 	 */
-	function init($options='')
+	public function init($options = '')
 	{
-	    global $db;
+		global $db;
 		$sql = array();
 
-        if (!defined('INC_FROM_DOLIBARR')) define('INC_FROM_DOLIBARR',true);
+		if (!defined('INC_FROM_DOLIBARR')) define('INC_FROM_DOLIBARR', true);
 
 		dol_include_once('/legalnotice/config.php');
 		dol_include_once('/legalnotice/script/create-maj-base.php');
@@ -191,14 +189,13 @@ class modLegalNotice extends DolibarrModules
 		}
 
 		$extrafields = new ExtraFields($db);
-		$extrafields->addExtraField('legalnotice_selected_notice','Mentions complémentaires','chkbxlst','100', '', 'propal', 0, 0, '', array('options'=>array('legalnotice:mention:rowid::' => null)),1,'',0);
+		$extrafields->addExtraField('legalnotice_selected_notice', 'Mentions complémentaires', 'chkbxlst', '100', '', 'propal', 0, 0, '', array('options'=>array('legalnotice:mention:rowid::' => null)), 1, '', 0);
 
 		$result=$this->_load_tables('/legalnotice/sql/');
 
 		dolibarr_set_const($this->db, 'MAIN_MODULE_LEGALNOTICE', $this->version, 'chaine', 0, '', 0);
 
 		return $this->_init($sql, $options);
-
 	}
 
 	/**
@@ -206,10 +203,10 @@ class modLegalNotice extends DolibarrModules
 	 *      Remove from database constants, boxes and permissions from Dolibarr database.
 	 *		Data directories are not deleted
 	 *
-     *      @param      string	$options    Options when enabling module ('', 'noboxes')
+	 *      @param      string	$options    Options when enabling module ('', 'noboxes')
 	 *      @return     int             	1 if OK, 0 if KO
 	 */
-	function remove($options='')
+	public function remove($options = '')
 	{
 		$sql = array();
 
@@ -222,17 +219,17 @@ class modLegalNotice extends DolibarrModules
 	 * @param string $targetVersion numéro de version pour lequel il faut faire la comparaison
 	 * @return bool
 	 */
-	public function needUpdate($targetVersion){
+	public function needUpdate($targetVersion)
+	{
 		global $conf;
 		if (!getDolGlobalString('MAIN_MODULE_LEGALNOTICE')) {
 			return true;
 		}
 
-		if(versioncompare(explode('.',$targetVersion), explode('.', getDolGlobalString('MAIN_MODULE_LEGALNOTICE')))>0){
+		if (versioncompare(explode('.', $targetVersion), explode('.', getDolGlobalString('MAIN_MODULE_LEGALNOTICE')))>0) {
 			return true;
 		}
 
 		return false;
 	}
-
 }

@@ -5,7 +5,8 @@
 
 
 ## Release 1.7
-- FIX : issue #25: when PDFs are generated in bulk, the legal notice gets duplicated + fix undeclared class properties. - *09/07/2025* - 1.7.4
+- FIX: Compat v23 - *02/12/2025* - 1.7.5
+- FIX: issue #25: when PDFs are generated in bulk, the legal notice gets duplicated + fix undeclared class properties. - *09/07/2025* - 1.7.4
 - FIX: Compat v22 - *03/02/2025* - 1.7.3
 - FIX: wrong test for invoice free text - *21/03/2025* - 1.7.2
 - FIX: Compat v21 - *10/12/2024* - 1.7.1
@@ -42,5 +43,3 @@
 - FIX : Compatibility V13 - newToken() replaces $_SESSION['newtoken'] and delete box folder - *18/05/2021* 1.0.3
 
  Initial version
-
-
